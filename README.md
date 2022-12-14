@@ -1,3 +1,3 @@
 # Progetto GESA 🏡
 
-Si vuole progettare un piccolo software per le gestione di stanze, eventi come progetto di progettazione algoritmi e computabilità.
+Si vuole progettare un piccolo software per le gestione di stanze ed eventi come progetto di progettazione algoritmi e computabilità.
