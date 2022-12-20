@@ -228,6 +228,49 @@ span.psw {
         </form>
     </div>
 
+      <!-- POP UP per MODIFICARE UNA STANZA -->
+      <div id= "editRoom" class="modal two">
+        
+        <form id= "editRoomForm" class="modal-content animate" >
+            <div class="imgcontainer">
+            <span onclick="document.getElementById('editRoom').style.display='none'" class="close" title="Close Modal">&times;</span>
+            </div>
+
+            <div class="container">
+
+            <label for="id"><b>ID</b></label>
+            <input id="idE" type="number" name="id" value="0" readonly>
+
+            <label for="tipo"><b>Tipologia</b></label>
+            <select id="tipologieE" name="tipo"></select>
+
+            <label for="area"><b>Area</b></label>
+            <input id="areaE" type="number" placeholder="Inserisci area" name="area" required>
+
+            <label for="capienza"><b>Capienza</b></label>
+            <input id="capienzaE" type="number" placeholder="Max persone" name="capienza" required>
+
+            <label for="pulizia"><b>Tempo pulizia</b></label>
+            <input id="puliziaE" type="number" placeholder="tempo pulizia" name="pulizia" required>
+
+            <label for="costo"><b>Costo orario</b></label>
+            <input id="costoE" type="number" placeholder="Costo orario" name="costo" required>
+
+            <label for="aperto">APERTO</label><input type="radio" id="apertoE" name="posizione" value="1"><br>
+            <label for="chiuso">CHIUSO</label><input type="radio" id="chiusoE" name="posizione" value="0"><br>
+
+            <label for="disp">DISPONIBILE</label><input type="radio" id="dispE" name="status" value="1"><br>
+            <label for="blocked">NON DISPONIBILE</label><input type="radio" id="blockedE" name="status" value="0"><br>
+                
+            <button type="button" onclick="editStanza()">Update</button>
+            </div>
+
+            <div class="container" style="background-color:#f1f1f1">
+            <button type="button" onclick="document.getElementById('editRoom').style.display='none'" class="cancelbtn">Cancel</button>
+            </div>
+        </form>
+    </div>
+
 </body>
 
 <script language="JavaScript" type="text/javascript"> 
@@ -235,13 +278,18 @@ span.psw {
     $j(function() {
         IDnewroom.style.display = "none";
         getTipologie();
+        getStanze();
     });
 
     var IDnewroom = document.getElementById('newRoom');
+    var IDeditroom = document.getElementById('editRoom');
 
     window.onclick = function(event) {
         if (event.target == IDnewroom) {
             IDnewroom.style.display = "none";
+        }
+        if (event.target == IDeditroom) {
+            IDeditroom.style.display = "none";
         }
     }
 
@@ -265,8 +313,10 @@ span.psw {
                 success:function(response) {
                 if (response.result=='ok') {
                     $j("#tipologie").empty();
+                    $j("#tipologieE").empty();
                     $j.each(response.elementi, function(){
                         $j("<option/>", {"value":this.id, "text":this.descr}).appendTo($j("#tipologie"));
+                        $j("<option/>", {"value":this.id, "text":this.descr}).appendTo($j("#tipologieE"));
                     });
                 }
             },
@@ -277,7 +327,64 @@ span.psw {
     }
 
     function getStanze(){
+        var param ='info=3';
 
+        $j.ajax({
+            url:'json/rooms.php', 
+            cache:false,
+            type:'post',
+            dataType:'json',
+            data: param,
+            success:function(response) {
+                if (response.result=='ok') {
+                    $j('#result').empty();
+                    var table=$j("<table/>", {"id":"tabella"});
+                    table.appendTo($j("#result"));
+                    var row = "";
+
+                    $j.each(response.elementi, function(){ 
+                        row = $j("<tr/>").appendTo(table);
+                        $j("<button/>", {"html":"EDIT","onclick":"edit("+this.id+","+this.area+","+this.capienza+",'"+this.tipoID+"',"+this.posizione+","+this.pulizia+","+this.costo+","+this.status+")"}).appendTo(row);
+                        $j("<td/>", {"html":"ID: " + this.id + "; "}).appendTo(row);
+                        $j("<td/>", {"html":"AREA: " + this.area  + "; "}).appendTo(row);
+                        $j("<td/>", {"html":"CAPIENZA: " + this.capienza  + "; "}).appendTo(row);
+                        $j("<td/>", {"html":"TIPO: " + this.tipo  + "; "}).appendTo(row);
+                        if(this.posizione == 0){
+                            $j("<td/>", {"html":"POSIZIONE: chiuso; "}).appendTo(row);
+                        }else{
+                            $j("<td/>", {"html":"POSIZIONE: aperto; "}).appendTo(row);
+                        }
+                        $j("<td/>", {"html":"PULIZIA: " + this.pulizia  + "; "}).appendTo(row);
+                        $j("<td/>", {"html":"COSTO: " + this.costo  + "; "}).appendTo(row);
+                        $j("<td/>", {"html":"STATUS: " + this.status  + "; "}).appendTo(row);
+                        if(this.status == 0){
+                            $j("<td/>", {"html":"STATUS: NON DISPONIBILE; "}).appendTo(row);
+                        }else{
+                            $j("<td/>", {"html":"STATUS: DISPONIBILE; "}).appendTo(row);
+                        }
+                    });
+                }else{
+                    alert(response.msg);
+                }
+            },
+            error:function(){
+                alert("Could not find data");
+            }
+        });
+    }
+
+    function edit(id,area,capienza,tipo,posizione,pulizia,costo,status){
+        IDeditroom.style.display = "block";
+        $j('#idE').attr('value', id);
+        $j('#areaE').attr('value', area);
+        $j('#capienzaE').attr('value', capienza);
+        $j('#tipologieE').attr('value', tipo);
+        if(posizione == '0')  $j('#chiusoE').attr('checked', "ischecked");
+        else $j('#apertoE').attr('checked', "ischecked");
+        $j('#puliziaE').attr('value', pulizia);
+        $j('#costoE').attr('value', costo);
+        if(status == '0')  $j('#blockedE').attr('checked', "ischecked");
+        else $j('#dispE').attr('checked', "ischecked");
     }
 
     function newStanza(){
@@ -290,10 +397,11 @@ span.psw {
             type:'post',
             dataType:'json',
             data: param,
-                success:function(response) {
+            success:function(response) {
                 if (response.result=='ok') {
                     alert("inserimento completato");
                     IDnewroom.style.display = "none";
+                    getStanze();
                 }else{
                     alert("inserimento fallito");
                     IDnewroom.style.display = "none";
@@ -304,6 +412,32 @@ span.psw {
             }
         });
 
+    }
+
+    function editStanza(){
+        var param ='info=4&';
+        param += $j('#editRoomForm').serialize()
+
+        $j.ajax({
+            url:'json/rooms.php', 
+            cache:false,
+            type:'post',
+            dataType:'json',
+            data: param,
+            success:function(response) {
+                if (response.result=='ok') {
+                    alert("modifica completata");
+                    IDeditroom.style.display = "none";
+                    getStanze();
+                }else{
+                    alert("modifica fallita");
+                    IDeditroom.style.display = "none";
+                }
+            },
+            error:function(){
+                alert("Could not find data");
+            }
+        });
     }
 
 
