@@ -56,10 +56,10 @@ function getInfo(){
     CloseCon($conn);
 
     if($risposta == "ok"){
-        header( 'Location: HomePage.html' );
+        header( 'Location: /practice//HomePage.php' );
         exit;
     }else{
-        header( 'Location: Login.html' );
+        header( 'Location: /practice//Frontpage.php' );
         exit;
     }
 

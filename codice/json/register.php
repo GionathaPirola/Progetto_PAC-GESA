@@ -6,6 +6,7 @@ $arr = array();
 $uname = strtoupper(getvar("uname"));
 $psw = getvar("psw");
 $mail = getvar("mail");
+$gruppo = strtoupper(getvar("gruppo"));
 
 $conn = OpenCon();
 
@@ -28,7 +29,7 @@ function getvar($name,$isint="") {
 //SQL
 
 function getInfo(){
-    global $conn,$uname,$psw,$mail;
+    global $conn,$uname,$psw,$mail,$gruppo;
 	$arr = array();
 	$val = array();
 
@@ -54,9 +55,23 @@ function getInfo(){
 
             if ($result2 === TRUE) {
                 $risposta = "ok";
+
+                if($gruppo!=""){
+                    $sql3 = "INSERT INTO `associazione`(`utente`, `associazione`) VALUES ('".$uname."','".$gruppo."') ";
+                    
+                    $result3 = $conn->query($sql3);
+
+                    if ($result3 === TRUE) {
+                        $risposta = "ok";
+                    } else {
+                        $risposta = "no";
+                        $msg='errore durante la creazione dell\'associazione';
+                    }
+                }
+
             } else {
                 $risposta = "no";
-                $msg='errore durante la creazione';
+                $msg='errore durante la creazione dell\'utente';
             }
         }
     }
@@ -64,7 +79,7 @@ function getInfo(){
     CloseCon($conn);
 
     if($risposta == "ok"){
-        header( 'Location: Login.html' );
+        header( 'Location: /practice/Frontpage.php' );
         exit;
     }else{
         echo $msg;

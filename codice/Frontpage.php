@@ -133,7 +133,7 @@ span.psw {
 
 <div id="id01" class="modal">
   
-  <form class="modal-content animate" action="http://localhost/practice/login.php" method="post">
+  <form class="modal-content animate" action="http://localhost/practice/json/login.php" method="post">
     <div class="imgcontainer">
       <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
       <img src="img/profile.png" class="avatar">
@@ -158,7 +158,7 @@ span.psw {
 
 <div id="id02" class="modal two">
   
-  <form class="modal-content animate" action="http://localhost/practice/register.php" method="post">
+  <form class="modal-content animate" action="http://localhost/practice/json/register.php" method="post">
     <div class="imgcontainer">
       <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
       <img src="img/profile.png" class="avatar">
@@ -171,9 +171,11 @@ span.psw {
       <label for="psw"><b>Password</b></label>
       <input type="password" placeholder="Enter Password" name="psw" required>
 
-      
       <label for="mail"><b>E-mail</b></label>
       <input type="email" placeholder="Enter E-mail" name="mail" required>
+
+      <label for="gruppo"><b>Associazione</b></label>
+      <input type="text" placeholder="Inserisci Associazione" name="gruppo" required>
         
       <button type="submit">Register</button>
     </div>
