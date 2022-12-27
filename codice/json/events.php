@@ -80,30 +80,45 @@ function newEvento()
 
     $result = $conn->query($sql);
 
-    $top...;
+    //contatori per trovare la stanza migliore
+    $bestID = 0;
+    $tipoBOOL = 0;
+    $diffMIN = 30;
+    $luogoBOOL = 0;
+    $infrMAX = 0;
 
     if ($result->num_rows > 0) {
         $risposta = 'ok';
         $msg = '';
         while ($row = $result->fetch_assoc()) {
             if($row['TIPOID'] == $tipo){
-                if($row['CAPIENZA'] >= $posti){
-                    if($row['POSIZIONE'] == $luogo){
-                        //infastrutture
-                        //faccio un flag per vedere se ha tutte le infrastrutture;
-                    }else{
-                        //infrastrutture
+                $tipoBOOL = 1;
+                if($row['CAPIENZA'] >= $posti || $diffMIN >= 30 || $diffMIN < 0){
+                    if($row['POSIZIONE'] == $luogo || $luogoBOOL = 0){
+                        if( (($row['CAPIENZA'] - $posti)<=$diffMIN && $diffMIN>=0) || (($row['CAPIENZA'] - $posti)>=$diffMIN && $diffMIN<=0)){
+                            $diffMIN = $row['CAPIENZA'] - $posti;
+                        //conta infrastrutture SQL
+                        $sql = "SELECT A.id as ID, area as AREA, capienza as CAPIENZA, descr as TIPO, B.id as TIPOID, posizione as POSIZIONE, puliziah as PULIZIA, costoh as COSTO, status as STATUS
+                        FROM stanza A join infrastruttura B on A.id=B.stanza";
+                        //finire questo 
+                        if($row2['COUNT'] >= $infrMAX){
+                            $bestID == $row['ID'];
+                        }
                     }
-                }else if($row['POSIZIONE'] == $luogo){
-
-                }else{
-                    //Infrastrutture
+                    }
                 }
             }
         }
     } else {
         $risposta = 'no';
         $msg = 'errore nell\'estrazione dei dati';
+    }
+
+    if($tipoBOOL){
+        //seleziona tutte le info e le infrastrutture della stanza e inviale
+    }else{
+        $risposta = 'no';
+        $msg = 'nessuna stanza adatta trovata'; 
     }
 
     CloseCon($conn);
