@@ -1,3 +1,8 @@
+<?php
+session_start();
+$user=strtoupper($_SESSION['username']);
+?>
+
 <html>
 
 <!--<script type="text/javascript" src="/js/jquery-1.4.4.min.js"></script>-->
@@ -60,7 +65,7 @@
         <div class="sidebar" style="overflow:auto;">
             <!-- Title -->
             <div class="profile">
-                <a href="Profile.html"> 
+                <a href="Profile.php"> 
                 <img src="img/profile.png" width="30%"></img></a>
                 <h3> HOMEPAGE</h3>
                 <p> woof woof </p>
@@ -73,17 +78,17 @@
                     </a>
                 </li>
                 <li> 
-                    <a href="Calendar.html">
+                    <a href="Calendar.php">
                         <i class="fas fa-home"></i> CALENDARIO 
                     </a>
                 </li>
                 <li> 
-                    <a href="Event.html">
+                    <a href="Event.php">
                         <i class="fas fa-home"></i> ORGANIZZA EVENTO 
                     </a>
                 </li>
                 <li> 
-                    <a href="Rooms.html">
+                    <a href="Rooms.php">
                         <i class="fas fa-home"></i> VISUALIZZA STANZE
                     </a>
                 </li>
