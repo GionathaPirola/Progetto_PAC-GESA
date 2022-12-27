@@ -1,3 +1,8 @@
+<?php
+session_start();
+$user=strtoupper($_SESSION['username']);
+?>
+
 <html>
 
 <!--<script type="text/javascript" src="/js/jquery-1.4.4.min.js"></script>-->
@@ -67,22 +72,22 @@
 
             <ul>
                 <li> 
-                    <a href="HomePage.html">
+                    <a href="HomePage.php">
                         <i class="fas fa-home"></i> HOMEPAGE 
                     </a>
                 </li>
                 <li> 
-                    <a href="Calendar.html">
+                    <a href="Calendar.php">
                         <i class="fas fa-home"></i> CALENDARIO 
                     </a>
                 </li>
                 <li> 
-                    <a href="Event.html">
+                    <a href="Event.php">
                         <i class="fas fa-home"></i> ORGANIZZA EVENTO 
                     </a>
                 </li>
                 <li> 
-                    <a href="Rooms.html">
+                    <a href="Rooms.php">
                         <i class="fas fa-home"></i> VISUALIZZA STANZE
                     </a>
                 </li>
@@ -103,10 +108,9 @@
 
         <div id="content" class="outer">  
             <div id="result" class="scroll">
-                <div> NOME: </div>
-                <div> EMAIL: </div>
-                <div> ASSOCIAZIONI: </div>
-                <div> EVENTI: </div>
+                <div id="rnome"> NOME: </div>
+                <div id="rmail"> EMAIL: </div>
+                <div id="rasso"> ASSOCIAZIONI: </div>
             </div>
     </div>
 
@@ -115,15 +119,44 @@
 <script language="JavaScript" type="text/javascript"> 
 
     $j(function() {
+        getUserInfo();
     });
 
 	var hamburger = document.querySelector(".hamburger");
+    
     hamburger.addEventListener("click", function(){
         document.querySelector("body").classList.toggle("active");
         $j("#showIcon").toggleClass("fas fa-caret-left fas fa-caret-right");
         var text = $j('#showText').text();
         $j('#showText').text( text == "PROFILO" ? "" : "PROFILO");
     })
+
+    function getUserInfo(){
+        <?php echo "var utente = '".$user."'" ?>;
+        var param ='info=1&uname='+ utente ;
+
+        $j.ajax({
+            url:'json/user.php', 
+            cache:false,
+            type:'post',
+            dataType:'json',
+            data: param,
+            success:function(response) {
+                if (response.result=='ok') {
+                    $j.each(response.elementi, function(){
+                        $j('#rnome').html("NOME: "+this.username);
+                        $j('#rmail').html("EMAIL: "+this.mail);
+                        $j('#rasso').html("ASSOCIAZIONE: "+this.associazione);
+                    });
+                }else{
+                    alert(response.error);
+                }
+            },
+            error:function(){
+                alert("Could not find data");
+            }
+        });
+    }
 
 
     // AJAX

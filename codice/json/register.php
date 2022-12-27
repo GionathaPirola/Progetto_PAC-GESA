@@ -10,7 +10,7 @@ $gruppo = strtoupper(getvar("gruppo"));
 
 $conn = OpenCon();
 
-$arr = getInfo();
+getInfo();
 
 //echo json_encode($arr);
 
