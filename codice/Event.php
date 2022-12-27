@@ -1,3 +1,7 @@
+<?php
+session_start();
+$user = strtoupper($_SESSION['username']);
+?>
 <html>
 
 <!--<script type="text/javascript" src="/js/jquery-1.4.4.min.js"></script>-->
@@ -35,29 +39,30 @@
 <script language="JavaScript" type="text/javascript" src="js/calendar.js"></script>
 <script language="JavaScript" type="text/javascript" src="js/calendar-it.js"></script>
 <!-- HTML-->
-<style> 
+<style>
+    @import "layout.css";
 
-@import "layout.css"; 
+    input {
+        width: 50%;
+        color: black;
+    }
 
-input{
-    width: 50%;
-}
-
-select{
-    width: 50%;
-}
-
+    select {
+        width: 50%;
+    }
 </style>
+
 <head>
-<link rel="stylesheet" href="fontawesome-free-5.8.1-web/css/all.css">
-<meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>La Casa di Bombo</title> 
+    <link rel="stylesheet" href="fontawesome-free-5.8.1-web/css/all.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Casa di Bombo</title>
 </head>
+
 <body>
 
-<div class="wrapper">
+    <div class="wrapper">
         <div class="section">
             <div class="top_navbar">
                 <div class="hamburger">
@@ -66,159 +71,257 @@ select{
                         <span id="showText"></span>
                     </a>
                 </div>
- 
-            </div> 
+
+            </div>
         </div>
         <div class="sidebar" style="overflow:auto;">
             <!-- Title -->
             <div class="profile">
-                <a href="Profile.html"> 
-                <img src="img/profile.png" width="30%"></img></a>
+                <a href="Profile.php">
+                    <img src="img/profile.png" width="30%"></img></a>
                 <h3> ORGANIZZA EVENTO </h3>
                 <p> woof woof </p>
             </div>
 
             <ul>
-                <li> 
-                    <a href="HomePage.html">
-                        <i class="fas fa-home"></i> HOMEPAGE 
+                <li>
+                    <a href="HomePage.php">
+                        <i class="fas fa-home"></i> HOMEPAGE
                     </a>
                 </li>
-                <li> 
-                    <a href="Calendar.html">
-                        <i class="fas fa-home"></i> CALENDARIO 
+                <li>
+                    <a href="Calendar.php">
+                        <i class="fas fa-home"></i> CALENDARIO
                     </a>
                 </li>
-                <li> 
+                <li>
                     <a style="color: blueviolet">
-                        <i class="fas fa-home"></i> ORGANIZZA EVENTO 
+                        <i class="fas fa-home"></i> ORGANIZZA EVENTO
                     </a>
                 </li>
-                <li> 
-                    <a href="Rooms.html">
+                <li>
+                    <a href="Rooms.php">
                         <i class="fas fa-home"></i> VISUALIZZA STANZE
                     </a>
                 </li>
             </ul>
 
 
-		<div id="footer" class="footer">
-			<p class="indirizzo">
-				
-			Indirizzo<br />
-			Paese<br />
-			Telefono<br />
-			Fax</p>
+            <div id="footer" class="footer">
+                <p class="indirizzo">
 
-			<p class="indirizzo"></p>
+                    Indirizzo<br />
+                    Paese<br />
+                    Telefono<br />
+                    Fax</p>
+
+                <p class="indirizzo"></p>
+            </div>
         </div>
- 	</div>
 
-        <div id="content" class="outer">  
+        <div id="content" class="outer">
             <div id="result" class="scroll">
-                <form>
-                    NOME EVENTO <input type="text" name="nome"> 
-                    <input type="radio" id="html" name="fav_language" value="HTML">
-                    <label for="html">PUBBLICO</label><br>
-                    <input type="radio" id="css" name="fav_language" value="CSS">
-                    <label for="css">PRIVATO</label><br>
-                    Numero massimo di partecipanti <input type="number" name="nome"> <br>
-                    Data e Ora <input type="datetime-local"><br>
-                    Tipologia evento <select name="cars" id="cars"> <option value="All"> GENERALE </option></select>
-                    <input type="radio" id="html" name="place" value="HTML">
-                    <label for="html">APERTO</label><br>
-                    <input type="radio" id="css" name="place" value="CSS">
-                    <label for="css">CHIUSO</label><br>
-                    Durata <input type="range" min="1" max="12" oninput="this.nextElementSibling.value = this.value"> <output>7</output> ore <br>
-                    Infrastrutture:<br>
-                    <input type="checkbox"> Bagno
-                    <input type="checkbox"> Gionny
-                    <input type="checkbox"> Piscina
-                    <input type="checkbox"> Pavimento
-                    <input type="checkbox"> Cucina
-                    <input type="checkbox"> Tesla livello 17
+                <form id="form">
+
+                    <label for="name"><b>Nome</b></label>
+                    <input type="text" placeholder="descrizione" name="nome" required>
+
+                    <label for="data"><b>Data</b></label>
+                    <input type="date" placeholder="data" name="data" required>
+
+                    <label for="time"><b>Ora</b></label>
+                    <input type="time" placeholder="ora" name="time" required>
+
+                    <label for="durata"><b>Durata</b></label>
+                    <input name="durata" type="range" min="1" max="12"
+                        oninput="this.nextElementSibling.value = this.value required"> <output>7</output> ore <br>
+
+                    <label for="partecipanti"><b>Max. Partecipanti</b></label>
+                    <input type="text" placeholder="partecipanti" name="partecipanti" required>
+
+                    <label for="public"><b>Visibilità</b></label>
+                    <input type="radio" id="publlico" name="public" value="0">
+                    <label for="pubblico">PUBBLICO</label><br>
+                    <input type="radio" id="privato" name="public" value="1">
+                    <label for="privato">PRIVATO</label><br>
+
+                    <label for="tipo"><b>Tipologia</b></label>
+                    <select name="tipo" id="tipologia">
+                        <option value="All"> GENERICO </option>
+                    </select>
+
+                    <label for="luogo"><b>Spazio</b></label>
+                    <input type="radio" id="aperto" name="luogo" value="0">
+                    <label for="aperto">APERTO</label><br>
+                    <input type="radio" id="chiuso" name="luogo" value="1">
+                    <label for="chiuso">CHIUSO</label><br>
+
+                    <b>Infrastrutture:</b><br>
+                    <div id="infrastrutture">
+                    </div>
+
+                    <button type="button" onclick="newEvento()">Inserisci evento</button>
+
                 </form>
             </div>
-    </div>
+        </div>
 
 </body>
 
-<script language="JavaScript" type="text/javascript"> 
+<script language="JavaScript" type="text/javascript">
 
-    $j(function() {
+    $j(function () {
+        getInfrastrutture();
+        getTipologie();
     });
 
-	var hamburger = document.querySelector(".hamburger");
-    hamburger.addEventListener("click", function(){
+    var hamburger = document.querySelector(".hamburger");
+    hamburger.addEventListener("click", function () {
         document.querySelector("body").classList.toggle("active");
         $j("#showIcon").toggleClass("fas fa-caret-left fas fa-caret-right");
         var text = $j('#showText').text();
-        $j('#showText').text( text == "ORGANIZZA" ? "" : "ORGANIZZA");
+        $j('#showText').text(text == "ORGANIZZA" ? "" : "ORGANIZZA");
     })
+
+    function getInfrastrutture() {
+        var param = 'info=2';
+
+        $j.ajax({
+            url: 'json/events.php',
+            cache: false,
+            type: 'post',
+            dataType: 'json',
+            data: param,
+            success: function (response) {
+                if (response.result == 'ok') {
+                    $j.each(response.elementi, function () {
+                        $j("<input/>", { "type": "checkbox", "name": "INFR" + this.id }).appendTo($j("#infrastrutture"));
+                        $j("<label/>", { "for": this.descr, "html": this.descr }).appendTo($j("#infrastrutture"));
+                        $j("<br/>").appendTo($j("#infrastrutture"));
+                    });
+                }
+            },
+            error: function () {
+                alert("Could not find data");
+            }
+        });
+    }
+
+    function getTipologie() {
+        var param = 'info=3';
+
+        $j.ajax({
+            url: 'json/events.php',
+            cache: false,
+            type: 'post',
+            dataType: 'json',
+            data: param,
+            success: function (response) {
+                if (response.result == 'ok') {
+                    $j("#tipologia").empty();
+                    $j.each(response.elementi, function () {
+                        $j("<option/>", { "value": this.id, "text": this.descr }).appendTo($j("#tipologia"));
+                    });
+                }
+            },
+            error: function () {
+                alert("Could not find data");
+            }
+        });
+    }
+
+    function newEvento() {
+        <?php echo "var utente = '" . $user . "'" ?>;
+        var param = 'info=4&uname=' + utente + '&';
+        param += $j('#form').serialize()
+
+        alert(param)
+
+        /*$j.ajax({
+                url:'json/events.php', 
+                cache:false,
+                type:'post',
+                dataType:'json',
+                data: param,
+                success:function(response) {
+                if (response.result=='ok') {
+                    $j.each(response.elementi, function(){
+                        $j("<input/>", {"value":this.id, "type":"checkbox","name":this.descr}).appendTo($j("#infrastrutture"));
+                        $j("<label/>", {"for":this.descr, "html":this.descr}).appendTo($j("#infrastrutture"));
+                        $j("<br/>").appendTo($j("#infrastrutture"));
+                    });
+                }
+            },
+            error:function(){
+                alert("Could not find data");
+            }
+        });*/
+    }
 
 
     // AJAX
-        
-    var AJAXobj=new Array();
-    var AJAXloader=new Array();
 
-    function waitAJAX(ts){
-        var add=Number(arguments[1]) || 0;
-        var pos=AJAXloader.indexOf(ts);
-        if (add==1 & pos<0){
+    var AJAXobj = new Array();
+    var AJAXloader = new Array();
+
+    function waitAJAX(ts) {
+        var add = Number(arguments[1]) || 0;
+        var pos = AJAXloader.indexOf(ts);
+        if (add == 1 & pos < 0) {
             AJAXloader.push(ts);
-        } else if (add==0 & pos>=0){
-            AJAXloader.splice(pos,1);
-        } else if(add==1 & pos>=0) {
+        } else if (add == 0 & pos >= 0) {
+            AJAXloader.splice(pos, 1);
+        } else if (add == 1 & pos >= 0) {
             //do nothing 
         }
-        if (add==1 & AJAXloader.length==1){
+        if (add == 1 & AJAXloader.length == 1) {
             startTime = new Date().getTime();
         }
-        if (AJAXloader.length>0){
+        if (AJAXloader.length > 0) {
             $j("#wait").show();
             //$show("waitsched");	
-        }else{
+        } else {
             $j("#wait").hide();
             //$hide("waitsched");	
-                    
+
             endTime = new Date().getTime();
             window.status = "Execution time: " + (endTime - startTime);
         }
     }
 
-    function Left(str, n){
+    function Left(str, n) {
         if (n <= 0)
             return "";
         else if (n > String(str).length)
             return str;
         else
-            return String(str).substring(0,n);
+            return String(str).substring(0, n);
     }
 
-    function Right(str, n){
+    function Right(str, n) {
         if (n <= 0)
-        return "";
+            return "";
         else if (n > String(str).length)
-        return str;
+            return str;
         else {
-        var iLen = String(str).length;
-        return String(str).substring(iLen, iLen - n);
+            var iLen = String(str).length;
+            return String(str).substring(iLen, iLen - n);
         }
     }
 
     function trim(stringToTrim) {
-        return stringToTrim.replace(/^\s+|\s+$/g,"");
+        return stringToTrim.replace(/^\s+|\s+$/g, "");
     }
 
-    function hidewaitAJAX(){
-        AJAXloader=[];
-        $hide("waitsched");	
-        $j.each(AJAXobj, function(){
+    function hidewaitAJAX() {
+        AJAXloader = [];
+        $hide("waitsched");
+        $j.each(AJAXobj, function () {
             this.abort();
         });
-        AJAXobj=[];
+        AJAXobj = [];
     }
-	
+
 </script>
+
 </html>

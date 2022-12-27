@@ -8,7 +8,7 @@ $psw = getvar("psw");
 
 $conn = OpenCon();
 
-$arr = getInfo();
+getInfo();
 
 //echo json_encode($arr);
 
@@ -56,10 +56,12 @@ function getInfo(){
     CloseCon($conn);
 
     if($risposta == "ok"){
-        header( 'Location: /practice//HomePage.php' );
+        session_start();
+        $_SESSION['username'] = $uname;
+        header( 'Location: /practice/HomePage.php' );
         exit;
     }else{
-        header( 'Location: /practice//Frontpage.php' );
+        header( 'Location: /practice/Frontpage.php' );
         exit;
     }
 
