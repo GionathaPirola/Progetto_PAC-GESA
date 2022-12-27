@@ -3370,7 +3370,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGFJOIFtJaW0ps="
 									},
-									"name": "Id_evento"
+									"name": "Id_evento",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -3622,7 +3623,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGFJOPzvZbiQ2Q="
 									},
-									"name": "area"
+									"name": "area",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -3630,7 +3632,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGFJOPzvZbiQ2Q="
 									},
-									"name": "iscritti"
+									"name": "iscritti",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -3649,7 +3652,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGFJOPzvZbiQ2Q="
 									},
-									"name": "tipologia"
+									"name": "tipologia",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -3657,7 +3661,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGFJOPzvZbiQ2Q="
 									},
-									"name": "posizione"
+									"name": "posizione",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -3665,7 +3670,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGFJOPzvZbiQ2Q="
 									},
-									"name": "data"
+									"name": "data",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -3673,7 +3679,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGFJOPzvZbiQ2Q="
 									},
-									"name": "durata"
+									"name": "durata",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -3681,7 +3688,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGFJOPzvZbiQ2Q="
 									},
-									"name": "descrizione_evento"
+									"name": "descrizione_evento",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -3689,7 +3697,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGFJOPzvZbiQ2Q="
 									},
-									"name": "associazione"
+									"name": "associazione",
+									"type": ""
 								}
 							]
 						},
@@ -3707,7 +3716,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGFJOSLZJbwo5g="
 									},
-									"name": "area"
+									"name": "area",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -3715,7 +3725,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGFJOSLZJbwo5g="
 									},
-									"name": "iscritti"
+									"name": "iscritti",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -3723,7 +3734,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGFJOSLZJbwo5g="
 									},
-									"name": "tipologia"
+									"name": "tipologia",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -3731,7 +3743,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGFJOSLZJbwo5g="
 									},
-									"name": "data"
+									"name": "data",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -3739,7 +3752,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGFJOSLZJbwo5g="
 									},
-									"name": "durata"
+									"name": "durata",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -3747,7 +3761,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGFJOSLZJbwo5g="
 									},
-									"name": "descrizione_evento"
+									"name": "descrizione_evento",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
