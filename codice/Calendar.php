@@ -582,16 +582,18 @@ function getEvents()
                 if (i - first_day.getDay() + 1 === currDate.getDate() && year === currDate.getFullYear() && month === currDate.getMonth()) {
                     day.classList.add('curr-date')
                 } else {
-                    for (var arr = 1; arr <= jArray[0].rows; arr++) {
-                        if (year == jArray[arr].data.substr(0, 4)) {
-                            if (month == jArray[arr].data.substr(5, 2) - 1) {
-                                if (i - first_day.getDay() + 1 == jArray[arr].data.substr(8, 2)) {
-                                    day.classList.add('event-date');
-                                    var index = arr;
-                                    day.onclick = function () { showEvento(jArray[index]) };
-                                }
+                    if(jArray[0]!=null){
+                        for (var arr = 1; arr <= jArray[0].rows; arr++) {
+                            if (year == jArray[arr].data.substr(0, 4)) {
+                                if (month == jArray[arr].data.substr(5, 2) - 1) {
+                                    if (i - first_day.getDay() + 1 == jArray[arr].data.substr(8, 2)) {
+                                        day.classList.add('event-date');
+                                        var index = arr;
+                                        day.onclick = function () { showEvento(jArray[index]) };
+                                    }
+                                } else { continue; }
                             } else { continue; }
-                        } else { continue; }
+                        }
                     }
                 }
             }
