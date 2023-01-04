@@ -90,7 +90,8 @@ $admin = isAdmin(); //1 se admin
             <div class="profile">
                 <a href="Profile.php"> 
                 <img src="img/profile.png" width="30%"></img></a>
-                <h3> $user</h3>
+                <h3> <?php echo $user ?></h3>
+
                 <p> woof woof </p>
             </div>
 

@@ -7,6 +7,8 @@ include 'json\db_connection.php';
 
 $conn = OpenCon();
 
+$admin = isAdmin();
+
 $events = getEvents();
 
 function isAdmin()
@@ -29,10 +31,8 @@ function isAdmin()
 
 function getEvents()
 {
-    global $conn, $user;
+    global $conn, $user, $admin;
     $val = array();
-
-    $admin = isAdmin();
 
     if ($admin == 1) {
         $sql = "SELECT distinct id as ID, descr as DESCR, private as PRIVATE, stanza as STANZA, organizz as ORGANIZZ, data as DATA, durata as DURATA, iscritti as ISCRITTI, B.associazione as ASSOCIAZIONE
