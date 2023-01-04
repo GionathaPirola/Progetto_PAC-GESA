@@ -38,9 +38,17 @@ button:hover {
 
 /* Extra styles for the cancel button */
 .changebtn {
-  width: auto;
-  padding: 10px 18px;
-  background-color: #000000;
+  width: 18%;
+  padding: 1.5% 4.5%;
+  background-color: rgb(5, 50, 104);
+  margin-left: 27%;
+}
+
+.loginbtn {
+  width: 18%;
+  padding: 1.5% 4.5%;
+  background-color: rgb(5, 68, 104);
+  margin-right: 27%;
 }
 
 /* Center the image and position the close button */
@@ -51,8 +59,7 @@ button:hover {
 }
 
 img.avatar {
-  width: 10%;
-  border-radius: 50%;
+  width: 15%;
 }
 
 .container {
@@ -79,14 +86,13 @@ img.avatar {
   background-color: #fefefe;
   margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
   border: 1px solid #888;
-  width: 80%; /* Could be more or less, depending on screen size */
+  width: 40%; /* Could be more or less, depending on screen size */
 }
 
 
 /* Add Zoom Animation */
 .animate {
-  -webkit-animation: animatezoom 3s;
-  animation: animatezoom 3s
+  animation: animatezoom 0.5s
 }
 
 @-webkit-keyframes animatezoom {
@@ -106,7 +112,7 @@ img.avatar {
   
   <form class="modal-content animate" action="http://localhost/practice/json/login.php" method="post">
     <div class="imgcontainer">
-      <img src="img/profile.png" class="avatar">
+      <img src="img/icona.png" class="avatar">
     </div>
 
     <div class="container">
@@ -116,10 +122,12 @@ img.avatar {
       <label for="psw"><b>Password</b></label>
       <input type="password" placeholder="Inserisci Password" name="psw" required>
         
-      <button type="submit">LOGIN</button>
+      
     </div>
 
     <div class="container" style="background-color:#f1f1f1">
+      <button type="submit" class="loginbtn">ACCEDI</button>
+      <label><b>Oppure</b></label>
       <button type="button" onclick="showReg()" class="changebtn">REGISTRATI</button>
     </div>
   </form>
@@ -129,7 +137,7 @@ img.avatar {
   
   <form class="modal-content animate" action="http://localhost/practice/json/register.php" method="post">
     <div class="imgcontainer">
-      <img src="img/profile.png" class="avatar">
+      <img src="img/icona.png" class="avatar">
     </div>
 
     <div class="container">
@@ -144,11 +152,11 @@ img.avatar {
 
       <label for="gruppo"><b>Associazione</b></label>
       <input type="text" placeholder="Inserisci Associazione" name="gruppo" required>
-        
-      <button type="submit">REGISTRATI</button>
     </div>
 
     <div class="container" style="background-color:#f1f1f1">
+      <button type="submit" class="loginbtn">REGISTRATI</button>
+      <label style="text-align:center"><b>Oppure</b></label>
       <button type="button" onclick="showLog()" class="changebtn">LOGIN</button>
     </div>
   </form>
