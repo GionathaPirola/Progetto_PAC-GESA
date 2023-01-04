@@ -169,7 +169,7 @@ $user = strtoupper($_SESSION['username']);
         <!-- POP UP DI CONFERMA STANZA -->
         <div id="pickRoom" class="modal two" hidden>
 
-        <form id="pickRoomForm" class="modal-content animate">
+        <div id="pickRoomForm" class="modal-content animate">
             <div class="imgcontainer">
                 <span onclick="document.getElementById('pickRoom').style.display='none'" class="close"
                     title="Close Modal">&times;</span>
@@ -186,7 +186,7 @@ $user = strtoupper($_SESSION['username']);
                 <button type="button" onclick="document.getElementById('pickRoom').style.display='none'"
                     class="cancelbtn">Annulla Prenotazione</button>
             </div>
-        </form>
+        </div>
         </div>
 
 </body>
@@ -280,7 +280,7 @@ $user = strtoupper($_SESSION['username']);
                         else innertext += "VISIBILITà: privato ";
                         if (this.posizione == '0') innertext += " LUOGO: chiuso ";
                         else innertext += "LUOGO: aperto ";
-                        innerbutton= "<button style='width:50%' onclick=pickStanza('"+this.evento+"','"+this.utente+"','"+this.id+"','"+this.data+"','"+this.time+"','"+this.posti+"','"+this.privacy+"')>Conferma</button>";
+                        innerbutton= "<button type='button' style='width:50%' onclick=\"pickStanza('"+this.evento+"','"+this.utente+"','"+this.id+"','"+this.data+"','"+this.time+"','"+this.durata+"','"+this.posti+"','"+this.privacy+"')\">Conferma</button>";
                     });
                     innertext += "INFR: ";
                     $j.each(response.infrastrutture, function(){
@@ -298,13 +298,14 @@ $user = strtoupper($_SESSION['username']);
         });
     }
 
-    function pickStanza(nome,utente,idstanza,data,ora,posti,privacy){
+    function pickStanza(nome,utente,idstanza,data,ora,durata,posti,privacy){
         var param = 'info=5&';
         param += 'uname=' + utente + '&';
         param += 'nome=' + nome + '&';
         param += 'idstanza=' + idstanza + '&';
         param += 'data=' + data + '&';
         param += 'time=' + ora + '&';
+        param += 'durata=' + durata + '&';
         param += 'partecipanti=' + posti + '&';
         param += 'public=' + privacy ;
 

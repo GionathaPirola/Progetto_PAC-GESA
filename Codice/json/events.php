@@ -88,6 +88,9 @@ function addEvento(){
     CloseCon($conn);
 
     $arr = array(
+        'data' => $data,
+        'time' => $time,
+        'inizio' => $inizio,
         'result' => $risposta,
         'errore' => $msg
     );
