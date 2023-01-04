@@ -134,7 +134,7 @@ $user = strtoupper($_SESSION['username']);
 
                     <label for="durata"><b>Durata</b></label>
                     <input name="durata" type="range" min="1" max="12"
-                        oninput="this.nextElementSibling.value = this.value required"> <output>7</output> ore <br>
+                        oninput="this.nextElementSibling.value = this.value" required> <output>7</output> ore <br>
 
                     <label for="partecipanti"><b>Max. Partecipanti</b></label>
                     <input type="text" placeholder="partecipanti" name="partecipanti" required>
@@ -151,9 +151,9 @@ $user = strtoupper($_SESSION['username']);
                     </select>
 
                     <label for="luogo"><b>Spazio</b></label>
-                    <input type="radio" id="aperto" name="luogo" value="0">
+                    <input type="radio" id="aperto" name="luogo" value="1">
                     <label for="aperto">APERTO</label><br>
-                    <input type="radio" id="chiuso" name="luogo" value="1">
+                    <input type="radio" id="chiuso" name="luogo" value="0">
                     <label for="chiuso">CHIUSO</label><br>
 
                     <b>Infrastrutture:</b><br>
@@ -166,9 +166,34 @@ $user = strtoupper($_SESSION['username']);
             </div>
         </div>
 
+        <!-- POP UP DI CONFERMA STANZA -->
+        <div id="pickRoom" class="modal two" hidden>
+
+        <div id="pickRoomForm" class="modal-content animate">
+            <div class="imgcontainer">
+                <span onclick="document.getElementById('pickRoom').style.display='none'" class="close"
+                    title="Close Modal">&times;</span>
+            </div>
+
+            <div class="container">
+
+                <div id ="recap">
+                </div>
+
+            </div>
+
+            <div class="container" style="background-color:#f1f1f1">
+                <button type="button" onclick="document.getElementById('pickRoom').style.display='none'"
+                    class="cancelbtn">Annulla Prenotazione</button>
+            </div>
+        </div>
+        </div>
+
 </body>
 
 <script language="JavaScript" type="text/javascript">
+
+    var pickRoom = document.getElementById('pickRoom');
 
     $j(function () {
         getInfrastrutture();
@@ -234,10 +259,9 @@ $user = strtoupper($_SESSION['username']);
         <?php echo "var utente = '" . $user . "'" ?>;
         var param = 'info=4&uname=' + utente + '&';
         param += $j('#form').serialize()
-
-        alert(param)
-
-        /*$j.ajax({
+        innertext = "";
+        innerbutton = "";
+        $j.ajax({
                 url:'json/events.php', 
                 cache:false,
                 type:'post',
@@ -246,16 +270,62 @@ $user = strtoupper($_SESSION['username']);
                 success:function(response) {
                 if (response.result=='ok') {
                     $j.each(response.elementi, function(){
-                        $j("<input/>", {"value":this.id, "type":"checkbox","name":this.descr}).appendTo($j("#infrastrutture"));
-                        $j("<label/>", {"for":this.descr, "html":this.descr}).appendTo($j("#infrastrutture"));
-                        $j("<br/>").appendTo($j("#infrastrutture"));
+                        pickRoom.style.display = "block";
+                        innertext += "NOME: " + this.evento + " di " + this.utente + "<br>" ;
+                        innertext += "AREA: " + this.area + " CAPIENZA: " + this.capienza ;
+                        innertext += " TIPO: " + this.tipo + " COSTO : " + this.costo*(parseInt(this.pulizia)+parseInt(this.durata)) + " $ <br>";
+                        innertext += " DATA: " + this.data + " ORA: " + this.time ;
+                        innertext += " POSTI: " + this.posti ;
+                        if (this.privacy == '0') innertext += " VISIBILITà: pubblico ";
+                        else innertext += "VISIBILITà: privato ";
+                        if (this.posizione == '0') innertext += " LUOGO: chiuso ";
+                        else innertext += "LUOGO: aperto ";
+                        innerbutton= "<button type='button' style='width:50%' onclick=\"pickStanza('"+this.evento+"','"+this.utente+"','"+this.id+"','"+this.data+"','"+this.time+"','"+this.durata+"','"+this.posti+"','"+this.privacy+"')\">Conferma</button>";
                     });
+                    innertext += "INFR: ";
+                    $j.each(response.infrastrutture, function(){
+                        innertext +=  this.infr + ", ";
+                    });
+                    innertext += "<br>";
+                    innertext += innerbutton;
+                    $j('#recap').html(innertext);
+
                 }
             },
             error:function(){
                 alert("Could not find data");
             }
-        });*/
+        });
+    }
+
+    function pickStanza(nome,utente,idstanza,data,ora,durata,posti,privacy){
+        var param = 'info=5&';
+        param += 'uname=' + utente + '&';
+        param += 'nome=' + nome + '&';
+        param += 'idstanza=' + idstanza + '&';
+        param += 'data=' + data + '&';
+        param += 'time=' + ora + '&';
+        param += 'durata=' + durata + '&';
+        param += 'partecipanti=' + posti + '&';
+        param += 'public=' + privacy ;
+
+        $j.ajax({
+                url:'json/events.php', 
+                cache:false,
+                type:'post',
+                dataType:'json',
+                data: param,
+                success:function(response) {
+                if (response.result=='ok') {
+                    alert("inserimento completato");
+                }else{
+                    alert(response.errore);
+                }
+            },
+            error:function(){
+                alert("Could not find data");
+            }
+        });
     }
 
 
