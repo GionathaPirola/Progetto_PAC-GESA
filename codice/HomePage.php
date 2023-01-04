@@ -1,6 +1,29 @@
 <?php
 session_start();
 $user=strtoupper($_SESSION['username']);
+include 'json\db_connection.php';
+
+$conn = OpenCon();
+
+function isAdmin()
+{
+    global $conn, $user;
+    $arr = array();
+    $val = array();
+
+    $sql = "SELECT admin as ADMIN
+  FROM utente
+        WHERE username = '" . $user . "'";
+
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        return $row['ADMIN'];
+    }
+}
+
+$admin = isAdmin(); //1 se admin
 ?>
 
 <html>
@@ -46,7 +69,7 @@ $user=strtoupper($_SESSION['username']);
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>La Casa di Bombo</title> 
+<title>HOMEPAGE</title> 
 </head>
 <body>
 
@@ -67,7 +90,7 @@ $user=strtoupper($_SESSION['username']);
             <div class="profile">
                 <a href="Profile.php"> 
                 <img src="img/profile.png" width="30%"></img></a>
-                <h3> HOMEPAGE</h3>
+                <h3> <?php echo $user ?></h3>
                 <p> woof woof </p>
             </div>
 
@@ -87,24 +110,12 @@ $user=strtoupper($_SESSION['username']);
                         <i class="fas fa-home"></i> ORGANIZZA EVENTO 
                     </a>
                 </li>
-                <li> 
-                    <a href="Rooms.php">
-                        <i class="fas fa-home"></i> VISUALIZZA STANZE
-                    </a>
-                </li>
+                <?php
+                if($admin == 1){
+                    echo ('<li><a href="Rooms.php"> <i class="fas fa-home"></i> VISUALIZZA STANZE </a></li>');
+                }
+                ?>
             </ul>
-
-
-		<div id="footer" class="footer">
-			<p class="indirizzo">
-				
-			Indirizzo<br />
-			Paese<br />
-			Telefono<br />
-			Fax</p>
-
-			<p class="indirizzo"></p>
-        </div>
  	</div>
 
         <div id="content" class="outer">  
