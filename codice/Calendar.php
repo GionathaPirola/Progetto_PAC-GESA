@@ -422,11 +422,11 @@ function getEvents()
                         <i class="fas fa-home"></i> ORGANIZZA EVENTO
                     </a>
                 </li>
-                <li>
-                    <a href="Rooms.php">
-                        <i class="fas fa-home"></i> VISUALIZZA STANZE
-                    </a>
-                </li>
+                <?php
+                if($admin == 1){
+                    echo ('<li><a href="Rooms.php"> <i class="fas fa-home"></i> VISUALIZZA STANZE </a></li>');
+                }
+                ?>
             </ul>
 
 
@@ -511,15 +511,29 @@ function getEvents()
                 </div>
             </form>
         </div>
+
+        <!-- MODAL -->
+        <div id="id03" class="modal" style="display:none">     
+        <form  id="form03" class="modal-content animate" >
+                <div class="container" style="background-color:#f1f1f1">
+                    <button type="button" onclick="document.getElementById('id03').style.display='none'"
+                        class="cancelbtn">Cancel</button>
+                </div>
+            </form>   
+        </div>
 </body>
 
 <script language="JavaScript" type="text/javascript">
 
     var modal = document.getElementById('id01');
+    var postit = document.getElementById('id03');
 
     window.onclick = function (event) {
         if (event.target == modal) {
             modal.style.display = "none";
+        }
+        if (event.target == postit) {
+            postit.style.display = "none";
         }
     }
 
@@ -571,7 +585,8 @@ function getEvents()
         let first_day = new Date(year, month, 1)
 
         for (let i = 0; i <= days_of_month[month] + first_day.getDay() - 1; i++) {
-            let day = document.createElement('div')
+            $j("<div/>", { "id": "day" + i  }).appendTo(calendar_days);
+            day = document.getElementById("day" + i)
             if (i >= first_day.getDay()) {
                 day.classList.add('calendar-day-hover')
                 day.innerHTML = i - first_day.getDay() + 1
@@ -589,7 +604,12 @@ function getEvents()
                                     if (i - first_day.getDay() + 1 == jArray[arr].data.substr(6, 2)) {
                                         day.classList.add('event-date')
                                         index = arr
-                                        day.onclick = function() {showEvento(jArray[index])};
+                                        for (let j = 0; j <= days_of_month[month] + first_day.getDay() - 1; j++) {  
+                                            if(j == index) {
+                                                $j("#day" + i).click(function(){ showEvento(jArray, j, i); }); 
+                                                postitEvento(jArray, j, i)
+                                            }
+                                        }
                                     }
                                 } else { continue; }
                             } else { continue; }
@@ -597,7 +617,6 @@ function getEvents()
                     }
                 }
             }
-            calendar_days.appendChild(day)
         }
     }
 
@@ -637,23 +656,36 @@ function getEvents()
         generateCalendar(curr_month.value, curr_year.value)
     }
 
-    function showEvento(evento) {
-        $j('input[name=idEvento]').val(evento.id);
-        $j('input[name=nome]').val(evento.descr);
-        $j('input[name=stanza]').val(evento.stanza);
-        $j('input[name=organizz]').val(evento.organizz);
-        $j('input[name=data]').val(evento.data);
-        $j('input[name=durata]').val(evento.durata);
-        $j('input[name=partecipanti]').val(evento.iscritti);
-        if (evento.private == 1) {
+    function postitEvento(evento,j,i){
+        $j("<button/>", { "type":"button","html": evento[j].descr, "id":"post"+j, "name":"post"+(i+1) }).appendTo("#form03");
+        $j("#post" + j).click(function(){ chooseEvento(jArray, j); }); 
+    }
+
+    function chooseEvento(evento,j){
+        postit.style.display = "none";
+        $j('input[name=idEvento]').val(evento[j].id);
+        $j('input[name=nome]').val(evento[j].descr);
+        $j('input[name=stanza]').val(evento[j].stanza);
+        $j('input[name=organizz]').val(evento[j].organizz);
+        $j('input[name=data]').val(evento[j].data);
+        $j('input[name=durata]').val(evento[j].durata);
+        $j('input[name=partecipanti]').val(evento[j].iscritti);
+        if (evento[j].private == 1) {
             $j('input[name=associazione]').val('Privato');
             $j('#subscr').hide();
         } else {
-            $j('input[name=associazione]').val(evento.associazione);
+            $j('input[name=associazione]').val(evento[j].associazione);
             $j('#subscr').show();
         }
-
         modal.style.display = "block";
+    }
+
+    function showEvento(evento, j, i ) {
+        for( k=0; k<= 31; k++){
+            $j("button[name=post"+k+"]").hide();
+        }
+        $j("button[name=post"+(i+1)+"]").show();
+        postit.style.display = "block";
     }
 
     function newSubscr() {
