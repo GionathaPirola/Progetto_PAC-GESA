@@ -1,6 +1,30 @@
 <?php
 session_start();
 $user=strtoupper($_SESSION['username']);
+
+include 'json\db_connection.php';
+
+$conn = OpenCon();
+
+function isAdmin()
+{
+    global $conn, $user;
+    $arr = array();
+    $val = array();
+
+    $sql = "SELECT admin as ADMIN
+		FROM utente
+        WHERE username = '" . $user . "'";
+
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        return $row['ADMIN'];
+    }
+}
+
+$admin = isAdmin(); //1 se admin
 ?>
 
 <html>
@@ -86,11 +110,11 @@ $user=strtoupper($_SESSION['username']);
                         <i class="fas fa-home"></i> ORGANIZZA EVENTO 
                     </a>
                 </li>
-                <li> 
-                    <a href="Rooms.php">
-                        <i class="fas fa-home"></i> VISUALIZZA STANZE
-                    </a>
-                </li>
+                <?php
+                if($admin == 1){
+                    echo ('<li><a href="Rooms.php"> <i class="fas fa-home"></i> VISUALIZZA STANZE </a></li>');
+                }
+                ?>
             </ul>
 
 
