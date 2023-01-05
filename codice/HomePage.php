@@ -91,7 +91,7 @@ $admin = isAdmin(); //1 se admin
                 <a href="Profile.php"> 
                 <img src="img/profile.png" width="30%"></img></a>
                 <h3> <?php echo $user ?></h3>
-                <p> woof woof </p>
+                <p> User</p>
             </div>
 
             <ul>
@@ -116,26 +116,21 @@ $admin = isAdmin(); //1 se admin
                 }
                 ?>
             </ul>
+            <div id="footer" class="footer">
+                <p class="indirizzo">
+
+
+                <p class="indirizzo"></p>
+            </div>
  	</div>
 
         <div id="content" class="outer">  
             <div id="result" class="scroll">
-                <h3>BENVENUTI NELLA CASA DI Bombo</h3>
+                <h1 style="color: rgb(255, 194, 14);font-size : 500%" >G.E.S.A</h1>
                 
-                <p>Salve a tutti quanti, divertiamoci un po'</p>
-                <p>Ai Baby Looney Tunes non si può dire di no</p>
-                
-                <p>Andiamo a casa di nonnina</p>
-                <p>Vuoi giocare a pallina?</p>
-                <p>Saltiamo e gridiamo “urrà!”</p>
-                
-                <p>Silvestro, Bugs e Daffy</p>
-                <p>Taz e Lola poi</p>
-                <p>Il piccoletto Titti</p>
-                <p>Mancate solo voi</p>
-                
-                <p>Salve a tutti quanti, divertiamoci, sì</p>
-                <p>I Baby Looney Tunes sono qui</p>
+                <h3 style="color: rgb(228, 159, 21);">Gestione Eventi Stanze Attività</h3>
+                <p > &nbsp</p>
+                <p style="color: white;">&nbspBenvenuti in G.E.S.A, il software per la gestione di eventi e prenotazioni stanze.</p>
             </div>
     </div>
 

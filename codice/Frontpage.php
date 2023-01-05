@@ -41,14 +41,13 @@ button:hover {
   width: 18%;
   padding: 1.5% 4.5%;
   background-color: rgb(5, 50, 104);
-  margin-left: 27%;
+  float: right;
 }
 
 .loginbtn {
   width: 18%;
   padding: 1.5% 4.5%;
   background-color: rgb(5, 68, 104);
-  margin-right: 27%;
 }
 
 /* Center the image and position the close button */
@@ -127,7 +126,6 @@ img.avatar {
 
     <div class="container" style="background-color:#f1f1f1">
       <button type="submit" class="loginbtn">ACCEDI</button>
-      <label><b>Oppure</b></label>
       <button type="button" onclick="showReg()" class="changebtn">REGISTRATI</button>
     </div>
   </form>
@@ -156,7 +154,6 @@ img.avatar {
 
     <div class="container" style="background-color:#f1f1f1">
       <button type="submit" class="loginbtn">REGISTRATI</button>
-      <label style="text-align:center"><b>Oppure</b></label>
       <button type="button" onclick="showLog()" class="changebtn">LOGIN</button>
     </div>
   </form>
