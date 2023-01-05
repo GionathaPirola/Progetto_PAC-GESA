@@ -222,6 +222,11 @@ $admin = isAdmin(); //1 se admin
 
     var pickRoom = document.getElementById('pickRoom');
 
+    var today = new Date();
+    today.setDate(today.getDate() + 5);
+    today = today.toISOString().split('T')[0];
+    document.getElementsByName("data")[0].setAttribute('min', today);
+
     $j(function () {
         getInfrastrutture();
         getTipologie();
@@ -283,46 +288,58 @@ $admin = isAdmin(); //1 se admin
     }
 
     function newEvento() {
-        <?php echo "var utente = '" . $user . "'" ?>;
-        var param = 'info=4&uname=' + utente + '&';
-        param += $j('#form').serialize()
-        innertext = "";
-        innerbutton = "";
-        $j.ajax({
-                url:'json/events.php', 
-                cache:false,
-                type:'post',
-                dataType:'json',
-                data: param,
-                success:function(response) {
-                if (response.result=='ok') {
-                    $j.each(response.elementi, function(){
-                        pickRoom.style.display = "block";
-                        innertext += "NOME: " + this.evento + " di " + this.utente + "<br>" ;
-                        innertext += "AREA: " + this.area + " CAPIENZA: " + this.capienza ;
-                        innertext += " TIPO: " + this.tipo + " COSTO : " + this.costo*(parseInt(this.pulizia)+parseInt(this.durata)) + " $ <br>";
-                        innertext += " DATA: " + this.data + " ORA: " + this.time ;
-                        innertext += " POSTI: " + this.posti ;
-                        if (this.privacy == '0') innertext += " VISIBILITà: pubblico ";
-                        else innertext += "VISIBILITà: privato ";
-                        if (this.posizione == '0') innertext += " LUOGO: chiuso ";
-                        else innertext += "LUOGO: aperto ";
-                        innerbutton= "<button type='button' style='width:50%' onclick=\"pickStanza('"+this.evento+"','"+this.utente+"','"+this.id+"','"+this.data+"','"+this.time+"','"+this.durata+"','"+this.posti+"','"+this.privacy+"')\">Conferma</button>";
-                    });
-                    innertext += "INFR: ";
-                    $j.each(response.infrastrutture, function(){
-                        innertext +=  this.infr + ", ";
-                    });
-                    innertext += "<br>";
-                    innertext += innerbutton;
-                    $j('#recap').html(innertext);
+        //ORARIO
+        var time = $j("input[name=time]").val().split(":");
+        var hour = parseInt(time[0]);
+        var long = parseInt($j("input[name=durata]").val());
+        alert(hour);
+        alert(long);
+        alert(hour + long);
+        //DATA
+        if(hour < 8 || (hour + long) > 20 ){
+            alert("Gli eventi devono iniziare e terminare tra le 8.00 e terminare per le 20.00");
+        }else{
+            <?php echo "var utente = '" . $user . "'" ?>;
+            var param = 'info=4&uname=' + utente + '&';
+            param += $j('#form').serialize()
+            innertext = "";
+            innerbutton = "";
+            $j.ajax({
+                    url:'json/events.php', 
+                    cache:false,
+                    type:'post',
+                    dataType:'json',
+                    data: param,
+                    success:function(response) {
+                    if (response.result=='ok') {
+                        $j.each(response.elementi, function(){
+                            pickRoom.style.display = "block";
+                            innertext += "NOME: " + this.evento + " di " + this.utente + "<br>" ;
+                            innertext += "AREA: " + this.area + " CAPIENZA: " + this.capienza ;
+                            innertext += " TIPO: " + this.tipo + " COSTO : " + this.costo*(parseInt(this.pulizia)+parseInt(this.durata)) + " $ <br>";
+                            innertext += " DATA: " + this.data + " ORA: " + this.time ;
+                            innertext += " POSTI: " + this.posti ;
+                            if (this.privacy == '0') innertext += " VISIBILITà: pubblico ";
+                            else innertext += "VISIBILITà: privato ";
+                            if (this.posizione == '0') innertext += " LUOGO: chiuso ";
+                            else innertext += "LUOGO: aperto ";
+                            innerbutton= "<button type='button' style='width:50%' onclick=\"pickStanza('"+this.evento+"','"+this.utente+"','"+this.id+"','"+this.data+"','"+this.time+"','"+this.durata+"','"+this.posti+"','"+this.privacy+"')\">Conferma</button>";
+                        });
+                        innertext += "INFR: ";
+                        $j.each(response.infrastrutture, function(){
+                            innertext +=  this.infr + ", ";
+                        });
+                        innertext += "<br>";
+                        innertext += innerbutton;
+                        $j('#recap').html(innertext);
 
+                    }
+                },
+                error:function(){
+                    alert("Could not find data");
                 }
-            },
-            error:function(){
-                alert("Could not find data");
-            }
-        });
+            });
+        }
     }
 
     function pickStanza(nome,utente,idstanza,data,ora,durata,posti,privacy){
