@@ -380,7 +380,7 @@ function getEvents()
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>La Casa di Bombo</title>
+    <title>Calendario</title>
 </head>
 
 <body>
@@ -402,8 +402,7 @@ function getEvents()
             <div class="profile">
                 <a href="Profile.php">
                     <img src="img/profile.png" width="30%"></img></a>
-                <h3> CALENDARIO EVENTI</h3>
-                <p> woof woof </p>
+                <h3> <?php echo $user ?></h3>
             </div>
 
             <ul>
@@ -413,7 +412,7 @@ function getEvents()
                     </a>
                 </li>
                 <li>
-                    <a style="color: blueviolet">
+                    <a style="color: rgb(228, 159, 21)">
                         <i class="fas fa-home"></i> CALENDARIO
                     </a>
                 </li>
@@ -432,12 +431,9 @@ function getEvents()
 
             <div id="footer" class="footer">
                 <p class="indirizzo">
-
-                    Indirizzo<br />
-                    Paese<br />
-                    Telefono<br />
-                    Fax</p>
-
+                    <p>Powered By</p>
+                    <p>Alessandro Colombo, Gionatha Pirola</p>
+                    <p class="indirizzo"></p>
                 <p class="indirizzo"></p>
             </div>
         </div>

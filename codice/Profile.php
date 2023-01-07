@@ -70,7 +70,7 @@ $admin = isAdmin(); //1 se admin
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>La Casa di Bombo</title> 
+<title>Profilo</title> 
 </head>
 <body>
 
@@ -90,8 +90,7 @@ $admin = isAdmin(); //1 se admin
             <!-- Title -->
             <div class="profile">
                 <img src="img/profile.png" width="30%"></img>
-                <h3> PROFILO </h3>
-                <p> woof woof </p>
+                <h3><?php echo $user ?> </h3>
             </div>
 
             <ul>
@@ -119,22 +118,17 @@ $admin = isAdmin(); //1 se admin
 
 
 		<div id="footer" class="footer">
-			<p class="indirizzo">
-				
-			Indirizzo<br />
-			Paese<br />
-			Telefono<br />
-			Fax</p>
+			<p>Powered By</p>
+            <p>Alessandro Colombo, Gionatha Pirola</p>
 
-			<p class="indirizzo"></p>
         </div>
  	</div>
 
         <div id="content" class="outer">  
             <div id="result" class="scroll">
-                <div id="rnome"> NOME: </div>
-                <div id="rmail"> EMAIL: </div>
-                <div id="rasso"> ASSOCIAZIONI: </div>
+                <div id="rnome"> <h3 style="color:  rgb(255, 194, 14)" >NOME: </h3></div>
+                <div id="rmail"> <h3 style="color:  rgb(255, 194, 14)">EMAIL: </h3> </div>
+                <div id="rasso"> <h3 style="color:  rgb(255, 194, 14)">ASSOCIAZIONI: </h3></div>
             </div>
     </div>
 
@@ -152,7 +146,6 @@ $admin = isAdmin(); //1 se admin
         document.querySelector("body").classList.toggle("active");
         $j("#showIcon").toggleClass("fas fa-caret-left fas fa-caret-right");
         var text = $j('#showText').text();
-        $j('#showText').text( text == "PROFILO" ? "" : "PROFILO");
     })
 
     function getUserInfo(){

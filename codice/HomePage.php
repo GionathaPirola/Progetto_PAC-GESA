@@ -91,12 +91,11 @@ $admin = isAdmin(); //1 se admin
                 <a href="Profile.php"> 
                 <img src="img/profile.png" width="30%"></img></a>
                 <h3> <?php echo $user ?></h3>
-                <p> User</p>
             </div>
 
             <ul>
                 <li> 
-                    <a style="color: blueviolet">
+                    <a style="color: rgb(228, 159, 21)">
                         <i class="fas fa-home"></i> HOMEPAGE 
                     </a>
                 </li>
@@ -118,8 +117,8 @@ $admin = isAdmin(); //1 se admin
             </ul>
             <div id="footer" class="footer">
                 <p class="indirizzo">
-
-
+			        <p>Powered By</p>
+                    <p>Alessandro Colombo, Gionatha Pirola</p>
                 <p class="indirizzo"></p>
             </div>
  	</div>
@@ -127,10 +126,25 @@ $admin = isAdmin(); //1 se admin
         <div id="content" class="outer">  
             <div id="result" class="scroll">
                 <h1 style="color: rgb(255, 194, 14);font-size : 500%" >G.E.S.A</h1>
-                
                 <h3 style="color: rgb(228, 159, 21);">Gestione Eventi Stanze Attività</h3>
-                <p > &nbsp</p>
-                <p style="color: white;">&nbspBenvenuti in G.E.S.A, il software per la gestione di eventi e prenotazioni stanze.</p>
+
+                <p >Benvenuti in G.E.S.A, il software per la gestione di eventi e prenotazioni stanze.</p>
+
+                <p >&nbsp </p>
+                <h2 style="color:  rgb(228, 159, 21);">COME FUNZIONA?</h2>
+                <p > Tramite questa pagina web è possibile svolgere tre funzioni principali: </p>
+                <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp   1. Prenotare una stanza per un evento privato.</p>
+                <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp    2. Prenotare una stanza per un evento pubblico, a cui tutti gli iscritto alla vostra associazione potranno iscriversi.</p>
+                <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp    3. Iscriversi ad un evento della propria associazione.</p>
+                <p>&nbsp </p>
+
+                <h2 style="color:  rgb(228, 159, 21);">QUALI STANZE SONO PRESENTI?</h2>
+                <p > Le stanze sono inserite dal gestore dell'edificio.</p>
+                <p > Ogni stanza ha caratteristiche differenti, il software cercherà di assegnare la stanza pù adatta alle vostre esigenze.</p>
+
+                <p >&nbsp </p>
+                <h2 style="color:  rgb(228, 159, 21);">COSA SI PUÒ VISUALIZZARE?</h2>
+                <P>É disponibile una visualizzazione del calendario dove sono inseriti sia gli eventi della proprio organizzazione, sia le stanze che si hanno prenotato per un evento privato. </P>
             </div>
     </div>
 
@@ -146,7 +160,6 @@ $admin = isAdmin(); //1 se admin
         document.querySelector("body").classList.toggle("active");
         $j("#showIcon").toggleClass("fas fa-caret-left fas fa-caret-right");
         var text = $j('#showText').text();
-        $j('#showText').text( text == "HOMEPAGE" ? "" : "HOMEPAGE");
     })
 
 
@@ -214,4 +227,10 @@ $admin = isAdmin(); //1 se admin
     }
 	
 </script>
+<style>
+    p{
+        color: white;
+        line-height: 25px;
+    }
+</style>
 </html>
