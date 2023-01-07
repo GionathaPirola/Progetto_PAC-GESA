@@ -157,7 +157,20 @@ $admin = isAdmin(); //1 se admin
                     <input type="date" placeholder="data" name="data" required>
 
                     <label for="time"><b>Ora</b></label>
-                    <input type="time" placeholder="ora" name="time" required>
+                    <select name="time" required>
+                        <option value="08:00"> 8:00 </option>
+                        <option value="09:00"> 9:00 </option>
+                        <option value="10:00"> 10:00 </option>
+                        <option value="11:00"> 11:00 </option>
+                        <option value="12:00"> 12:00 </option>
+                        <option value="13:00"> 13:00 </option>
+                        <option value="14:00"> 14:00 </option>
+                        <option value="15:00"> 15:00 </option>
+                        <option value="16:00"> 16:00 </option>
+                        <option value="17:00"> 17:00 </option>
+                        <option value="18:00"> 18:00 </option>
+                        <option value="19:00"> 19:00 </option>
+                    </select>
 
                     <label for="durata"><b>Durata</b></label>
                     <input name="durata" type="range" min="1" max="12"
@@ -173,7 +186,7 @@ $admin = isAdmin(); //1 se admin
                     <label for="privato">PRIVATO</label><br>
 
                     <label for="tipo"><b>Tipologia</b></label>
-                    <select name="tipo" id="tipologia">
+                    <select name="tipo" id="tipologia" required>
                         <option value="All"> GENERICO </option>
                     </select>
 
@@ -289,12 +302,10 @@ $admin = isAdmin(); //1 se admin
 
     function newEvento() {
         //ORARIO
-        var time = $j("input[name=time]").val().split(":");
+        var time = $j('select[name=time] option').filter(':selected').val().split(":");
         var hour = parseInt(time[0]);
+        var minute = parseInt(time[1]);
         var long = parseInt($j("input[name=durata]").val());
-        alert(hour);
-        alert(long);
-        alert(hour + long);
         //DATA
         if(hour < 8 || (hour + long) > 20 ){
             alert("Gli eventi devono iniziare e terminare tra le 8.00 e terminare per le 20.00");
@@ -324,6 +335,8 @@ $admin = isAdmin(); //1 se admin
                             if (this.posizione == '0') innertext += " LUOGO: chiuso ";
                             else innertext += "LUOGO: aperto ";
                             innerbutton= "<button type='button' style='width:50%' onclick=\"pickStanza('"+this.evento+"','"+this.utente+"','"+this.id+"','"+this.data+"','"+this.time+"','"+this.durata+"','"+this.posti+"','"+this.privacy+"')\">Conferma</button>";
+                            bestbutton= "<button type='button' style='width:50%' onclick=\"bestStanza()\">Mostra Stanza Migliore</button>";
+
                         });
                         innertext += "INFR: ";
                         $j.each(response.infrastrutture, function(){
@@ -331,8 +344,15 @@ $admin = isAdmin(); //1 se admin
                         });
                         innertext += "<br>";
                         innertext += innerbutton;
+                        innertext += bestbutton;
                         $j('#recap').html(innertext);
 
+                    }else{
+                        pickRoom.style.display = "block";
+                        innertext += "NESSUNA STANZA ADATTA TROVATA PER QUESTO ORARIO<br>" ;
+                        bestbutton= "<button type='button' style='width:50%' onclick=\"bestStanza()\">Mostra Stanza Migliore</button>";
+                        innertext += bestbutton;
+                        $j('#recap').html(innertext);
                     }
                 },
                 error:function(){
@@ -340,6 +360,50 @@ $admin = isAdmin(); //1 se admin
                 }
             });
         }
+    }
+
+    function bestStanza(){
+        <?php echo "var utente = '" . $user . "'" ?>;
+        var param = 'info=6&uname=' + utente + '&';
+        param += $j('#form').serialize()
+        $j.ajax({
+                url:'json/events.php', 
+                cache:false,
+                type:'post',
+                dataType:'json',
+                data: param,
+                success:function(response) {
+                if (response.result=='ok') {
+                    $j.each(response.elementi, function(){
+                        pickRoom.style.display = "block";
+                        innertext += "STANZA MIGLIORE <br>" ;
+                        innertext += "NOME: " + this.evento + " di " + this.utente + "<br>" ;
+                        innertext += "AREA: " + this.area + " CAPIENZA: " + this.capienza ;
+                        innertext += " TIPO: " + this.tipo + " COSTO : " + this.costo*(parseInt(this.pulizia)+parseInt(this.durata)) + " $ <br>";
+                        innertext += " DATA: " + this.beststart;
+                        innertext += " POSTI: " + this.posti ;
+                        if (this.privacy == '0') innertext += " VISIBILITà: pubblico ";
+                        else innertext += "VISIBILITà: privato ";
+                        if (this.posizione == '0') innertext += " LUOGO: chiuso ";
+                        else innertext += "LUOGO: aperto ";
+                        innerbutton= "<button type='button' style='width:50%' onclick=\"pickStanza('"+this.evento+"','"+this.utente+"','"+this.id+"','"+this.data+"','"+this.time+"','"+this.durata+"','"+this.posti+"','"+this.privacy+"')\">Conferma</button>";
+                    });
+                    innertext += "INFR: ";
+                    $j.each(response.infrastrutture, function(){
+                        innertext +=  this.infr + ", ";
+                    });
+                    innertext += "<br>";
+                    innertext += innerbutton;
+                    $j('#recap').html(innertext);
+
+                }else{
+                    alert(response.errore);
+                }
+            },
+            error:function(){
+                alert("Could not find data");
+            }
+        });
     }
 
     function pickStanza(nome,utente,idstanza,data,ora,durata,posti,privacy){
