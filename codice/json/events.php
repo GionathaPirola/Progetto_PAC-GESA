@@ -197,34 +197,43 @@ function bestStanza(){
 
         $sql5 = "SELECT C.data as INIZIO, (C.data + C.durata*100 + A.puliziah*100) as FINE 
                 FROM eventi C join stanza A on C.stanza = A.id
-                WHERE C.stanza = '".$bestID."'and C.data >= ".$inizio."
+                WHERE C.stanza = '".$bestID."'and (C.data + C.durata*100 + A.puliziah*100) > ".$inizio." 
                 ORDER BY C.data";
         
         $result3 = $conn->query($sql3);
         $result4 = $conn->query($sql4);
         $result5 = $conn->query($sql5);
+        $tempstart = $inizio;
 
         if ($result3->num_rows > 0) {                                         
             $risposta = 'ok';
             $msg = '';
 
             while ($row3 = $result3->fetch_assoc()) {
+               
                 if ($result5->num_rows > 0) {
                     $risposta = 'ok';
                     $msg = '';
                     $row5flag = true;
-                    $tempstart = $inizio;
                     $pul = $row3['PULIZIA'];
+                    $tempend = $tempstart + $durata + $pul;
 
                     while ($row5 = $result5->fetch_assoc()) {
                         if($row5flag){
+
+                            if(substr($tempend,6,2)==substr($row5['INIZIO'],6,2)){ //se sono lo stesso giorno
+                                if($row5['INIZIO'] > $tempend){
+                                    $row5flag = false;
+                                    $tempstart = $row5['FINE'];
+                                }else{
+                                    $tempstart = $row5['FINE'];
+                                }                            
+                            }
+
                             $tempend = $tempstart + $durata + $pul;
-                            //controllo che non sia oltre le 20;
-                            if($row5['INIZIO'] < $tempend){
-                                $row5flag = false;
-                                $tempstart = $row5['FINE'];
-                            }else{
-                                $tempstart = $row5['FINE'];
+
+                            if(substr($tempend,8,2)>20){
+                                $tempstart = nextday(substr($tempend, 0, 8))."0800";
                             }
                         }
                     }
@@ -277,6 +286,43 @@ function bestStanza(){
     );
 
     return $arr;
+}
+
+function nextDay($data){
+    $anno = substr($data, 0, 4);
+    $mese = substr($data, 4, 2);
+    $giorno = substr($data, 6, 2);
+
+    $giorninelmese = 31;
+
+    if ($mese == "11" || $mese == "04" || $mese == "06" || $mese == "09")
+        $giorninelmese = 30;
+    else if($mese == "02"){
+        if (($anno%4==0 && $anno%100!=0) || $anno%400==0){
+            $giorninelmese = 29;
+        } else {
+            $giorninelmese = 28;
+        }
+    }
+
+    $giorno = $giorno+1;
+
+    if($giorno<10){
+        $giorno = "0".$giorno;
+    }else if($giorno>$giorninelmese){
+        $giorno = "01";
+        $mese = $mese + 1;
+        if ($mese < 10) {
+            $mese = "0".$mese;
+        }else if($mese > 12){
+            $mese = "01";
+            $anno = $anno + 1;
+        }
+    }
+
+    return $anno."".$mese."".$giorno;
+
+
 }
 
 function newEvento()

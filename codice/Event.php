@@ -249,8 +249,6 @@ $admin = isAdmin(); //1 se admin
     hamburger.addEventListener("click", function () {
         document.querySelector("body").classList.toggle("active");
         $j("#showIcon").toggleClass("fas fa-caret-left fas fa-caret-right");
-        var text = $j('#showText').text();
-        $j('#showText').text(text == "ORGANIZZA" ? "" : "ORGANIZZA");
     })
 
     function getInfrastrutture() {
@@ -331,7 +329,7 @@ $admin = isAdmin(); //1 se admin
                             innertext += " DATA: " + this.data + " ORA: " + this.time ;
                             innertext += " POSTI: " + this.posti ;
                             if (this.privacy == '0') innertext += " VISIBILITà: pubblico ";
-                            else innertext += "VISIBILITà: privato ";
+                            else innertext += " VISIBILITà: privato ";
                             if (this.posizione == '0') innertext += " LUOGO: chiuso ";
                             else innertext += "LUOGO: aperto ";
                             innerbutton= "<button type='button' style='width:50%' onclick=\"pickStanza('"+this.evento+"','"+this.utente+"','"+this.id+"','"+this.data+"','"+this.time+"','"+this.durata+"','"+this.posti+"','"+this.privacy+"')\">Conferma</button>";
@@ -374,16 +372,19 @@ $admin = isAdmin(); //1 se admin
                 data: param,
                 success:function(response) {
                 if (response.result=='ok') {
+                    $j('#recap').empty();
+                    innertext = "";
                     $j.each(response.elementi, function(){
                         pickRoom.style.display = "block";
                         innertext += "STANZA MIGLIORE <br>" ;
                         innertext += "NOME: " + this.evento + " di " + this.utente + "<br>" ;
                         innertext += "AREA: " + this.area + " CAPIENZA: " + this.capienza ;
                         innertext += " TIPO: " + this.tipo + " COSTO : " + this.costo*(parseInt(this.pulizia)+parseInt(this.durata)) + " $ <br>";
-                        innertext += " DATA: " + this.beststart;
+                        innertext += " DATA: " + this.beststart.substring(0,4) + "-" + this.beststart.substring(4,6) + "-" + this.beststart.substring(6,8);
+                        innertext += " ORA: " + this.beststart.substring(8,10) + ":" + this.beststart.substring(10,12) ;
                         innertext += " POSTI: " + this.posti ;
                         if (this.privacy == '0') innertext += " VISIBILITà: pubblico ";
-                        else innertext += "VISIBILITà: privato ";
+                        else innertext += " VISIBILITà: privato ";
                         if (this.posizione == '0') innertext += " LUOGO: chiuso ";
                         else innertext += "LUOGO: aperto ";
                         innerbutton= "<button type='button' style='width:50%' onclick=\"pickStanza('"+this.evento+"','"+this.utente+"','"+this.id+"','"+this.data+"','"+this.time+"','"+this.durata+"','"+this.posti+"','"+this.privacy+"')\">Conferma</button>";
