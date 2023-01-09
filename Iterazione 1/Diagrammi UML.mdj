@@ -1048,7 +1048,7 @@
 											"top": 614,
 											"width": 101.11181640625,
 											"height": 13,
-											"text": "+Id_Eveneto: Int",
+											"text": "+Id_Evento: Int",
 											"horizontalAlignment": 0
 										},
 										{
@@ -2075,7 +2075,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGFJJdTVF0+es4="
 							},
-							"name": "Id_Eveneto",
+							"name": "Id_Evento",
 							"type": "Int"
 						},
 						{
