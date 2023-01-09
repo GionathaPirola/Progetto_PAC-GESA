@@ -69,14 +69,47 @@ $admin = isAdmin(); //1 se admin
 <style>
     @import "layout.css";
 
-    input {
+    input[type=text], select {
         width: 50%;
-        color: black;
+        padding: 12px 20px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    input[type="date"]{
+        padding: 10px;
+        border: none;
+        outline: none;
+        border-radius: 5px;
+        width: 50%;
+    }
+
+    input[type="range"]{
+        padding: 10px;
+        border-radius: 5px;
+        width: 50%;
+    }
+    
+    label{
+        color: rgb(228, 159, 21);
+        font-size: 20px;
+        margin-top: 10px;
+        display: block;
     }
 
     select {
         width: 50%;
     }
+   
+   input[type="radio"]{
+   }
+
+   h3{
+    font-size: 18px;
+   }
 </style>
 
 <head>
@@ -84,7 +117,7 @@ $admin = isAdmin(); //1 se admin
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>La Casa di Bombo</title>
+    <title>Organizzazione eventi</title>
 </head>
 
 <body>
@@ -106,8 +139,7 @@ $admin = isAdmin(); //1 se admin
             <div class="profile">
                 <a href="Profile.php">
                     <img src="img/profile.png" width="30%"></img></a>
-                <h3> ORGANIZZA EVENTO </h3>
-                <p> woof woof </p>
+                <h3> <?php echo $user ?> </h3>
             </div>
 
             <ul>
@@ -122,7 +154,7 @@ $admin = isAdmin(); //1 se admin
                     </a>
                 </li>
                 <li>
-                    <a style="color: blueviolet">
+                    <a style="color: rgb(228, 159, 21)">
                         <i class="fas fa-home"></i> ORGANIZZA EVENTO
                     </a>
                 </li>
@@ -137,10 +169,8 @@ $admin = isAdmin(); //1 se admin
             <div id="footer" class="footer">
                 <p class="indirizzo">
 
-                    Indirizzo<br />
-                    Paese<br />
-                    Telefono<br />
-                    Fax</p>
+                    <p>Powered By</p>
+                    <p>Alessandro Colombo, Gionatha Pirola</p>
 
                 <p class="indirizzo"></p>
             </div>
@@ -150,13 +180,13 @@ $admin = isAdmin(); //1 se admin
             <div id="result" class="scroll">
                 <form id="form">
 
-                    <label for="name"><b>Nome</b></label>
-                    <input type="text" placeholder="descrizione" name="nome" required>
-
+                    <label for="name"><b>Nome evento</b></label>
+                    <input type="text" placeholder="Inserire nome dell'evento" name="nome" required>
+                </br>
                     <label for="data"><b>Data</b></label>
-                    <input type="date" placeholder="data" name="data" required>
+                    <input type="date" placeholder="Data" name="data" required>
 
-                    <label for="time"><b>Ora</b></label>
+                    <label for="time"><b>Orario di inizio</b></label>
                     <select name="time" required>
                         <option value="08:00"> 8:00 </option>
                         <option value="09:00"> 9:00 </option>
@@ -172,31 +202,31 @@ $admin = isAdmin(); //1 se admin
                         <option value="19:00"> 19:00 </option>
                     </select>
 
-                    <label for="durata"><b>Durata</b></label>
-                    <input name="durata" type="range" min="1" max="12"
-                        oninput="this.nextElementSibling.value = this.value" required> <output>7</output> ore <br>
+                    <label for="durata"><b>Durata oraria</b></label>
+                    <input name="durata" type="range"  min="1" max="12" 
+                        oninput="this.nextElementSibling.value = this.value" required> <output style="font-size:17px;">7</output><br>
 
-                    <label for="partecipanti"><b>Max. Partecipanti</b></label>
-                    <input type="text" placeholder="partecipanti" name="partecipanti" required>
+                    <label for="partecipanti"><b>Numero massimo di partecipanti</b></label>
+                    <input type="text" placeholder="Inserire numero di partecipanti" name="partecipanti" required>
 
                     <label for="public"><b>Visibilità</b></label>
-                    <input type="radio" id="publlico" name="public" value="0">
-                    <label for="pubblico">PUBBLICO</label><br>
+                    <input type="radio" id="pubblico" name="public" value="0">
+                    <h3 for="pubblico">PUBBLICO</h3>
                     <input type="radio" id="privato" name="public" value="1">
-                    <label for="privato">PRIVATO</label><br>
+                    <h3 for="privato">PRIVATO<h3>
 
                     <label for="tipo"><b>Tipologia</b></label>
                     <select name="tipo" id="tipologia" required>
                         <option value="All"> GENERICO </option>
                     </select>
 
-                    <label for="luogo"><b>Spazio</b></label>
+                    <label for="luogo"><b>Posizione stanza</b></label>
                     <input type="radio" id="aperto" name="luogo" value="1">
-                    <label for="aperto">APERTO</label><br>
+                    <h3 for="aperto">APERTA</h3>
                     <input type="radio" id="chiuso" name="luogo" value="0">
-                    <label for="chiuso">CHIUSO</label><br>
+                    <h3 for="chiuso">CHIUSA</h3>
 
-                    <b>Infrastrutture:</b><br>
+                    <label><b>Infrastrutture</b></label><br>
                     <div id="infrastrutture">
                     </div>
 

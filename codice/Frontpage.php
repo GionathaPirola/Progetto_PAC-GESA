@@ -39,14 +39,14 @@ button:hover {
 /* Extra styles for the cancel button */
 .changebtn {
   width: 18%;
-  padding: 1.5% 4.5%;
+  padding: 1.5% 2.5%;
   background-color: rgb(5, 50, 104);
   float: right;
 }
 
 .loginbtn {
   width: 18%;
-  padding: 1.5% 4.5%;
+  padding: 1.5% 2.5%;
   background-color: rgb(5, 68, 104);
 }
 
