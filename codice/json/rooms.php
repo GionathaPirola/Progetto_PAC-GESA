@@ -28,6 +28,9 @@ switch ($info) {
     case 4: //Update stanza
         $arr = updateRoom();
         break;
+    case 5: //Elenco Infrastrutture
+        $arr = getInfrastrutture();
+        break;
 }
 
 echo json_encode($arr);
@@ -46,6 +49,43 @@ function getvar($name, $isint = "")
 }
 
 //SQL
+function getInfrastrutture()
+{
+    global $conn;
+    $arr = array();
+    $val = array();
+
+    $sql = "SELECT id as ID, descr as DESCR
+		FROM infrastrutture ";
+
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+        $risposta = 'ok';
+        $msg = '';
+        while ($row = $result->fetch_assoc()) {
+
+            $val[] = array(
+                'id' => $row['ID'],
+                'descr' => $row['DESCR']
+            );
+
+        }
+    } else {
+        $risposta = 'no';
+        $msg = 'errore nell\'estrazione dei dati';
+    }
+
+    CloseCon($conn);
+
+    $arr = array(
+        'elementi' => $val,
+        'result' => $risposta,
+        'errore' => $msg
+    );
+
+    return $arr;
+}
 
 function getTipo()
 {

@@ -112,14 +112,39 @@ $user = strtoupper($_SESSION['username']);
         </div>
 
         <div id="content" class="outer">
-            <h3>ELENCO STANZE <button onclick="document.getElementById('newRoom').style.display='block'"> Nuova
-                    stanza</button> </h3>
+            <h3>ELENCO STANZE <br>
+                <button onclick="document.getElementById('newRoom').style.display='block'" style="width:20%"> Nuova stanza</button> 
+                <button onclick="document.getElementById('newInfr').style.display='block'" style="width:20%"> Nuova infrastruttura </button> 
+                <button onclick="document.getElementById('newTipo').style.display='block'" style="width:20%"> Nuova tipologia stanza</button> </h3>
 
             <div id="result" class="scroll">
 
             </div>
         </div>
 
+        <!-- POP UP per INSERIRE UNA NUOVA INFRASTRUTTURA -->
+        <div id="newInfr" class="modal two" hidden>
+        <form id="newInfrForm" class="modal-content animate">
+            <div id="allinfr"></div>
+            <label for="newinfr"><b>Nuova infrastruttura</b></label>
+                    <input type="text" placeholder="Inserire infrastruttura" name="newinfr" required>
+            <button type="button" onclick="document.getElementById('newInfr').style.display='none'"
+                        class="cancelbtn">Cancel</button>
+            <button type="button" onclick="newInfr()">Inserisci infrastruttura</button>
+        </form>
+        </div>
+
+        <!-- POP UP per INSERIRE UNA NUOVA TIPOLOGIA DI STANZA -->
+        <div id="newTipo" class="modal two" hidden>
+        <form id="newTipoForm" class="modal-content animate">
+            <div id="alltipo"></div>
+            <label for="newtype"><b>Nuova tipologia</b></label>
+                    <input type="text" placeholder="Inserire tipologia" name="newtype" required>
+            <button type="button" onclick="document.getElementById('newTipo').style.display='none'"
+                        class="cancelbtn">Cancel</button>
+            <button type="button" onclick="newTipo()">Inserisci tipologia</button>
+        </form>
+        </div>
 
         <!-- POP UP per INSERIRE UNA NUOVA STANZA -->
         <div id="newRoom" class="modal two" hidden>
@@ -150,6 +175,9 @@ $user = strtoupper($_SESSION['username']);
                     <label for="aperto">APERTO</label><input type="radio" id="aperto" name="posizione" value="1"><br>
                     <label for="chiuso">CHIUSO</label><input type="radio" id="chiuso" name="posizione" value="0"><br>
 
+                    <label><b>Infrastrutture</b></label><br>
+                    <div id="infrastrutture">
+                    </div>
 
                     <button type="button" onclick="newStanza()">Insert</button>
                 </div>
@@ -193,6 +221,10 @@ $user = strtoupper($_SESSION['username']);
                     <label for="aperto">APERTO</label><input type="radio" id="apertoE" name="posizione" value="1"><br>
                     <label for="chiuso">CHIUSO</label><input type="radio" id="chiusoE" name="posizione" value="0"><br>
 
+                    <label><b>Infrastrutture</b></label><br>
+                    <div id="infrastrutture">
+                    </div>
+
                     <label for="disp">DISPONIBILE</label><input type="radio" id="dispE" name="status" value="1"><br>
                     <label for="blocked">NON DISPONIBILE</label><input type="radio" id="blockedE" name="status"
                         value="0"><br>
@@ -213,6 +245,7 @@ $user = strtoupper($_SESSION['username']);
 
     $j(function () {
         IDnewroom.style.display = "none";
+        getInfrastrutture();
         getTipologie();
         getStanze();
     });
@@ -237,8 +270,9 @@ $user = strtoupper($_SESSION['username']);
         $j('#showText').text(text == "STANZE" ? "" : "STANZE");
     })
 
-    function getTipologie() {
-        var param = 'info=1';
+    function getInfrastrutture() {
+        var param = 'info=5';
+        innertext = "";
 
         $j.ajax({
             url: 'json/rooms.php',
@@ -247,13 +281,44 @@ $user = strtoupper($_SESSION['username']);
             dataType: 'json',
             data: param,
             success: function (response) {
+                $j('#allinfr').empty();
+                if (response.result == 'ok') {
+                    $j.each(response.elementi, function () {
+                        $j("<input/>", { "type": "checkbox", "name": "INFR" + this.id }).appendTo($j("#infrastrutture"));
+                        $j("<label/>", { "for": this.descr, "html": this.descr }).appendTo($j("#infrastrutture"));
+                        $j("<br/>").appendTo($j("#infrastrutture"));
+                        innertext += this.descr+" <br>"
+                    });
+                    $j('#allinfr').html(innertext);
+                }
+            },
+            error: function () {
+                alert("Could not find data");
+            }
+        });
+    }
+
+    function getTipologie() {
+        var param = 'info=1';
+        innertext = "";
+
+        $j.ajax({
+            url: 'json/rooms.php',
+            cache: false,
+            type: 'post',
+            dataType: 'json',
+            data: param,
+            success: function (response) {
+                $j('#alltipo').empty();
                 if (response.result == 'ok') {
                     $j("#tipologie").empty();
                     $j("#tipologieE").empty();
                     $j.each(response.elementi, function () {
                         $j("<option/>", { "value": this.id, "text": this.descr }).appendTo($j("#tipologie"));
                         $j("<option/>", { "value": this.id, "text": this.descr }).appendTo($j("#tipologieE"));
+                        innertext += this.descr+" <br>"
                     });
+                    $j('#alltipo').html(innertext);
                 }
             },
             error: function () {
