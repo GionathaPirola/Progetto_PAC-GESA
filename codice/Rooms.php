@@ -221,10 +221,6 @@ $user = strtoupper($_SESSION['username']);
                     <label for="aperto">APERTO</label><input type="radio" id="apertoE" name="posizione" value="1"><br>
                     <label for="chiuso">CHIUSO</label><input type="radio" id="chiusoE" name="posizione" value="0"><br>
 
-                    <label><b>Infrastrutture</b></label><br>
-                    <div id="infrastrutture">
-                    </div>
-
                     <label for="disp">DISPONIBILE</label><input type="radio" id="dispE" name="status" value="1"><br>
                     <label for="blocked">NON DISPONIBILE</label><input type="radio" id="blockedE" name="status"
                         value="0"><br>
@@ -272,7 +268,6 @@ $user = strtoupper($_SESSION['username']);
 
     function getInfrastrutture() {
         var param = 'info=5';
-        innertext = "";
 
         $j.ajax({
             url: 'json/rooms.php',
@@ -281,15 +276,60 @@ $user = strtoupper($_SESSION['username']);
             dataType: 'json',
             data: param,
             success: function (response) {
-                $j('#allinfr').empty();
                 if (response.result == 'ok') {
                     $j.each(response.elementi, function () {
                         $j("<input/>", { "type": "checkbox", "name": "INFR" + this.id }).appendTo($j("#infrastrutture"));
                         $j("<label/>", { "for": this.descr, "html": this.descr }).appendTo($j("#infrastrutture"));
                         $j("<br/>").appendTo($j("#infrastrutture"));
-                        innertext += this.descr+" <br>"
                     });
-                    $j('#allinfr').html(innertext);
+                }
+            },
+            error: function () {
+                alert("Could not find data");
+            }
+        });
+    }
+
+    function newInfr(){
+        var param = 'info=6&';
+        param += "infr=" +$j("input[name='newinfr']").val();
+        
+        $j.ajax({
+            url: 'json/rooms.php',
+            cache: false,
+            type: 'post',
+            dataType: 'json',
+            data: param,
+            success: function (response) {
+                if (response.result == 'ok') {
+                    alert("inserimento completato");
+                    getInfrastrutture();
+                } else {
+                    alert("inserimento fallito");
+                }
+            },
+            error: function () {
+                alert("Could not find data");
+            }
+        });
+    }
+
+    function newTipo(){
+        var param = 'info=7&';
+        param += "tipo=" + $j("input[name='newtype']").val();
+
+        $j.ajax({
+            url: 'json/rooms.php',
+            cache: false,
+            type: 'post',
+            dataType: 'json',
+            data: param,
+            success: function (response) {
+                if (response.result == 'ok') {
+                    alert("inserimento completato");
+                    getTipologie();
+                } else {
+                    alert("inserimento fallito");
                 }
             },
             error: function () {
@@ -300,7 +340,6 @@ $user = strtoupper($_SESSION['username']);
 
     function getTipologie() {
         var param = 'info=1';
-        innertext = "";
 
         $j.ajax({
             url: 'json/rooms.php',
@@ -309,16 +348,13 @@ $user = strtoupper($_SESSION['username']);
             dataType: 'json',
             data: param,
             success: function (response) {
-                $j('#alltipo').empty();
                 if (response.result == 'ok') {
                     $j("#tipologie").empty();
                     $j("#tipologieE").empty();
                     $j.each(response.elementi, function () {
                         $j("<option/>", { "value": this.id, "text": this.descr }).appendTo($j("#tipologie"));
                         $j("<option/>", { "value": this.id, "text": this.descr }).appendTo($j("#tipologieE"));
-                        innertext += this.descr+" <br>"
                     });
-                    $j('#alltipo').html(innertext);
                 }
             },
             error: function () {
