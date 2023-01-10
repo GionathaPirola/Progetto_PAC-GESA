@@ -6,12 +6,14 @@ $arr = array();
 $info = getvar("info");
 $id = strtoupper(getvar("id"));
 $tipo = strtoupper(getvar("tipo"));
+$infr = strtoupper(getvar("infr"));
 $area = strtoupper(getvar("area"));
 $capienza = strtoupper(getvar("capienza"));
 $pulizia = strtoupper(getvar("pulizia"));
 $costo = strtoupper(getvar("costo"));
 $posizione = strtoupper(getvar("posizione"));
 $status = strtoupper(getvar("status"));
+$infrastrutture = array();
 
 $conn = OpenCon();
 
@@ -31,6 +33,12 @@ switch ($info) {
     case 5: //Elenco Infrastrutture
         $arr = getInfrastrutture();
         break;
+    case 6: //Elenco Infrastrutture
+        $arr = newInfr();
+        break;
+    case 7: //Elenco Infrastrutture
+        $arr = newTipo();
+        break;
 }
 
 echo json_encode($arr);
@@ -49,6 +57,119 @@ function getvar($name, $isint = "")
 }
 
 //SQL
+
+function newTipo(){
+    global $conn,$tipo;
+    $arr = array();
+    $count = 0;
+
+    $sql = "SELECT count(*) as CNT
+		FROM tipologia 
+        WHERE descr = '" . $tipo . "'";
+
+    $result = $conn->query($sql);
+    $row = $result->fetch_assoc();
+    $count = $row['CNT'];
+
+    if ($count == 0) {
+
+        $risposta = 'ok';
+        $msg = '';
+
+        $sql3 = "SELECT max(id) as ID
+		FROM tipologia ";
+
+        if($result3 = $conn->query($sql3)){
+            $row3 = $result3->fetch_assoc();
+            $maxid = $row3['ID'] + 1;
+        }else{
+            $maxid = 1 ;
+        }
+
+        $sql2 = "INSERT INTO `tipologia`(`id`, `descr`) 
+            VALUES ('" . $maxid . "','" . $tipo . "')";
+
+        $result2 = $conn->query($sql2);
+
+        if ($result2 === TRUE) {
+            $risposta = "ok";
+            $msg = '';
+        } else {
+            $risposta = "no";
+            $msg = 'errore durante l\'inserimento';
+        }
+
+    } else {
+        $risposta = 'no';
+        $msg = 'tipologia esistente';
+    }
+
+    CloseCon($conn);
+
+    $arr = array(
+        'result' => $risposta,
+        'errore' => $msg
+    );
+
+    return $arr;
+}
+
+function newInfr(){
+    global $conn,$infr;
+    $arr = array();
+    $count = 0;
+
+    $sql = "SELECT count(*) as CNT
+		FROM infrastrutture 
+        WHERE descr = '" . $infr . "'";
+
+    $result = $conn->query($sql);
+    $row = $result->fetch_assoc();
+    $count = $row['CNT'];
+
+    if ($count == 0) {
+
+        $risposta = 'ok';
+        $msg = '';
+
+        $sql3 = "SELECT max(id) as ID
+		FROM infrastrutture ";
+
+        if($result3 = $conn->query($sql3)){
+            $row3 = $result3->fetch_assoc();
+            $maxid = $row3['ID'] + 1;
+        }else{
+            $maxid = 1 ;
+        }
+
+        $sql2 = "INSERT INTO `infrastrutture`(`id`, `descr`) 
+            VALUES ('" . $maxid . "','" . $infr . "')";
+
+        $result2 = $conn->query($sql2);
+
+        if ($result2 === TRUE) {
+            $risposta = "ok";
+            $msg = '';
+        } else {
+            $risposta = "no";
+            $msg = 'errore durante l\'inserimento';
+        }
+
+    } else {
+        $risposta = 'no';
+        $msg = 'infrastruttura già esistente ';
+    }
+
+    CloseCon($conn);
+
+    $arr = array(
+        'result' => $risposta,
+        'errore' => $msg
+    );
+
+    return $arr;
+}
+
 function getInfrastrutture()
 {
     global $conn;
@@ -128,9 +249,27 @@ function getTipo()
 
 function newRoom()
 {
-    global $conn, $tipo, $area, $capienza, $pulizia, $costo, $posizione;
+    global $conn, $tipo, $area, $capienza, $pulizia, $costo, $posizione, $infrastrutture;
     $arr = array();
     $val = array();
+
+    //INFRASTRUTTURE
+    $sqlInfo = "SELECT id as ID, descr as DESCR
+		FROM infrastrutture ";
+
+    $resultInfo = $conn->query($sqlInfo);
+
+    if ($resultInfo->num_rows > 0) {
+        $i = 0;
+        while ($rowInfo = $resultInfo->fetch_assoc()) {
+            $temp = strtoupper(getvar("INFR".$rowInfo['ID']));
+            if( $temp == "ON"){
+                $infrastrutture[$i] =  $rowInfo['ID']; 
+                $i++;
+            }
+        }
+        $numInfr = $i;
+    }
 
     //GET MAX ID
     $sql = "SELECT max(Id) as ID from stanza";
@@ -152,6 +291,21 @@ function newRoom()
     if ($result2 === TRUE) {
         $risposta = "ok";
         $msg = '';
+        //INSERT INFRASTRUTTURE
+        for ($k = 0; $k < $numInfr; $k++) {
+            $sql3 = "INSERT INTO `infostanza`(`stanza`, `infr`) VALUES ('" . $id . "','" . $infrastrutture[$k] . "')";
+
+            $result3 = $conn->query($sql3);
+
+            if ($result3 === TRUE) {
+                $risposta = "ok";
+                $msg = '';
+            } else {
+                $risposta = "no";
+                $msg = 'errore durante la creazione dell\'infrastrutture';
+            }
+        }
+
     } else {
         $risposta = "no";
         $msg = 'errore durante la creazione dell\'utente';

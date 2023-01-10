@@ -210,10 +210,8 @@ $admin = isAdmin(); //1 se admin
                     <input type="text" placeholder="Inserire numero di partecipanti" name="partecipanti" required>
 
                     <label for="public"><b>Visibilità</b></label>
-                    <input type="radio" id="pubblico" name="public" value="0">
-                    <h3 for="pubblico">PUBBLICO</h3>
-                    <input type="radio" id="privato" name="public" value="1">
-                    <h3 for="privato">PRIVATO<h3>
+                    <h3 for="pubblico">PUBBLICO</h3><input type="radio" id="pubblico" name="public" value="0">
+                    <h3 for="privato">PRIVATO<h3><input type="radio" id="privato" name="public" value="1">
 
                     <label for="tipo"><b>Tipologia</b></label>
                     <select name="tipo" id="tipologia" required>
@@ -221,10 +219,9 @@ $admin = isAdmin(); //1 se admin
                     </select>
 
                     <label for="luogo"><b>Posizione stanza</b></label>
-                    <input type="radio" id="aperto" name="luogo" value="1">
-                    <h3 for="aperto">APERTA</h3>
-                    <input type="radio" id="chiuso" name="luogo" value="0">
-                    <h3 for="chiuso">CHIUSA</h3>
+                    
+                    <h3 for="aperto">APERTA</h3><input type="radio" id="aperto" name="luogo" value="1">
+                    <h3 for="chiuso">CHIUSA</h3><input type="radio" id="chiuso" name="luogo" value="0">
 
                     <label><b>Infrastrutture</b></label><br>
                     <div id="infrastrutture">
@@ -293,8 +290,8 @@ $admin = isAdmin(); //1 se admin
             success: function (response) {
                 if (response.result == 'ok') {
                     $j.each(response.elementi, function () {
+                        $j("<h3/>", { "for": this.descr, "html": this.descr }).appendTo($j("#infrastrutture"));
                         $j("<input/>", { "type": "checkbox", "name": "INFR" + this.id }).appendTo($j("#infrastrutture"));
-                        $j("<label/>", { "for": this.descr, "html": this.descr }).appendTo($j("#infrastrutture"));
                         $j("<br/>").appendTo($j("#infrastrutture"));
                     });
                 }
