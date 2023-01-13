@@ -414,7 +414,9 @@ $admin = isAdmin(); //1 se admin
                         else innertext += " VISIBILITà: privato ";
                         if (this.posizione == '0') innertext += " LUOGO: chiuso ";
                         else innertext += "LUOGO: aperto ";
-                        innerbutton= "<button type='button' style='width:50%' onclick=\"pickStanza('"+this.evento+"','"+this.utente+"','"+this.id+"','"+this.data+"','"+this.time+"','"+this.durata+"','"+this.posti+"','"+this.privacy+"')\">Conferma</button>";
+                        dataTMP =  this.beststart.substring(0,4) + "-" + this.beststart.substring(4,6) + "-" + this.beststart.substring(6,8);
+                        oraTMP = this.beststart.substring(8,10) + ":" + this.beststart.substring(10,12) ;
+                        innerbutton= "<button type='button' style='width:50%' onclick=\"pickStanza('"+this.evento+"','"+this.utente+"','"+this.id+"','"+dataTMP+"','"+oraTMP+"','"+this.durata+"','"+this.posti+"','"+this.privacy+"')\">Conferma</button>";
                     });
                     innertext += "INFR: ";
                     $j.each(response.infrastrutture, function(){
