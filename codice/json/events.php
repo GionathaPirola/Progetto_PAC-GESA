@@ -37,9 +37,18 @@ switch ($info) {
     case 5: //Nuovo Evento
         $arr = addEvento();
         break;    
-    case 6: //Nuovo Evento
+    case 6: //Migliore stanza per evento
         $arr = bestStanza();
         break;   
+    case 7: //Eliminazione evento
+        $arr = deleteEvento();
+        break; 
+    case 8: //rimuovi iscrizione
+        $arr = deleteSubscr();
+        break;
+    case 9: //elenco iscritti
+        $arr = getIscritti();
+        break;
 }
 
 echo json_encode($arr);
@@ -55,6 +64,98 @@ function getvar($name, $isint = "")
             return "";
         }
     }
+}
+
+function getIscritti()
+{
+    global $conn,$evento;
+    $arr = array();
+    $val = array();
+
+    $sql = "SELECT utente as NOME 
+		FROM pubblico 
+        WHERE evento = '".$evento."'";
+
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+        $risposta = 'ok';
+        $msg = '';
+        while ($row = $result->fetch_assoc()) {
+
+            $val[] = array(
+                'nome' => $row['NOME'],
+            );
+
+        }
+    } else {
+        $risposta = 'no';
+        $msg = 'nessun iscritto all\'evento';
+    }
+
+    CloseCon($conn);
+
+    $arr = array(
+        'elementi' => $val,
+        'result' => $risposta,
+        'errore' => $msg
+    );
+
+    return $arr;
+
+}
+
+
+function deleteSubscr(){
+    global $conn, $evento, $user;
+    $arr = array();
+
+    $sql = "DELETE FROM `pubblico` WHERE evento = '".$evento."' and utente = '".$user."'";
+
+    $result = $conn->query($sql);
+
+    if ($result === TRUE) {
+        $risposta = "ok";
+        $msg = '';
+    } else {
+        $risposta = "no";
+        $msg = 'errore durante la cancellazione dell\'iscrizione';
+    }
+
+    CloseCon($conn);
+
+    $arr = array(
+        'result' => $risposta,
+        'errore' => $msg
+    );
+
+    return $arr;
+}
+
+function deleteEvento(){
+    global $conn, $evento;
+    $arr = array();
+
+    $sql = "DELETE FROM `eventi` WHERE id = '".$evento."'";
+
+    $result = $conn->query($sql);
+
+    if ($result === TRUE) {
+        $risposta = "ok";
+        $msg = '';
+    } else {
+        $risposta = "no";
+        $msg = 'errore durante l\'eliminazione dell\'evento';
+    }
+
+    CloseCon($conn);
+
+    $arr = array(
+        'result' => $risposta,
+        'errore' => $msg
+    );
+
+    return $arr;
 }
 
 function addEvento(){

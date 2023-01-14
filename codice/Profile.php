@@ -6,6 +6,10 @@ include 'json\db_connection.php';
 
 $conn = OpenCon();
 
+$admin = isAdmin();
+
+$events = getEvents();
+
 function isAdmin()
 {
     global $conn, $user;
@@ -24,7 +28,45 @@ function isAdmin()
     }
 }
 
-$admin = isAdmin(); //1 se admin
+function getEvents()
+{
+    global $conn, $user, $admin;
+    $val = array();
+
+    //seleziona -> stesso organizzatore o -> stessa associazione,pubbliche
+    $sql = "SELECT distinct id as ID, descr as DESCR, private as PRIVATE, stanza as STANZA, organizz as ORGANIZZ, data as DATA, durata as DURATA, iscritti as ISCRITTI
+            FROM eventi A left join pubblico B on B.evento = A.id
+            WHERE  (A.organizz = '" . $user . "') or (B.utente = '" . $user . "') ";
+
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+
+        $val[] = array(
+            'rows' => $result->num_rows
+        );
+
+        while ($row = $result->fetch_assoc()) {
+
+            $val[] = array(
+                'id' => $row['ID'],
+                'descr' => $row['DESCR'],
+                'private' => $row['PRIVATE'],
+                'stanza' => $row['STANZA'],
+                'organizz' => $row['ORGANIZZ'],
+                'data' => $row['DATA'],
+                'durata' => $row['DURATA'],
+                'iscritti' => $row['ISCRITTI']
+            );
+
+        }
+    }
+
+    CloseCon($conn);
+
+    return $val;
+
+}
 ?>
 
 <html>
@@ -124,20 +166,34 @@ $admin = isAdmin(); //1 se admin
         </div>
  	</div>
 
-        <div id="content" class="outer">  
+    <div id="content" class="outer">  
             <div id="result" class="scroll">
-                <div id="rnome"> <h3 style="color:  rgb(255, 194, 14)" >NOME: </h3></div>
-                <div id="rmail"> <h3 style="color:  rgb(255, 194, 14)">EMAIL: </h3> </div>
-                <div id="rasso"> <h3 style="color:  rgb(255, 194, 14)">ASSOCIAZIONI: </h3></div>
+                <div id="rnome"> </div>
+                <div id="rmail"> </div>
+                <div id="rasso"> </div>
+            </div>
+            <div id="eventsResult" class="scroll">
+
             </div>
     </div>
-
+        <!-- POP UP per INSERIRE UNA NUOVA INFRASTRUTTURA -->
+    <div id="iscrittiAll" class="modal two" hidden>
+    <form id="iscrittiAllForm" class="modal-content animate">
+        <div id="iscrittiResult"></div>
+        <button type="button" onclick="document.getElementById('iscrittiAll').style.display='none'"
+                    class="cancelbtn">Cancel</button>
+    </form>
+    </div>
 </body>
 
 <script language="JavaScript" type="text/javascript"> 
 
+    var jArray = <?php echo json_encode($events); ?>;
+    var utenteSessh = <?php echo "'".$user."'"; ?>;
+
     $j(function() {
         getUserInfo();
+        printEvents();
     });
 
 	var hamburger = document.querySelector(".hamburger");
@@ -147,6 +203,113 @@ $admin = isAdmin(); //1 se admin
         $j("#showIcon").toggleClass("fas fa-caret-left fas fa-caret-right");
         var text = $j('#showText').text();
     })
+
+    function printEvents(){
+        $j('#eventsResult').empty();
+        var table=$j("<table/>", {"id":"tabella"});
+        table.appendTo($j("#eventsResult"));
+        var row = $j("<tr/>", { "class":"thR"}).appendTo(table); 
+        $j("<td/>", { "html":"Descrizione" }).appendTo(row);
+        $j("<td/>", { "html":"Organizzatore" }).appendTo(row);
+        $j("<td/>", { "html":"Data" }).appendTo(row);
+        $j("<td/>", { "html":"Durata" }).appendTo(row);
+        $j("<td/>", { "html":"Iscritti" }).appendTo(row);
+        $j("<td/>", { "html":"Visibilità" }).appendTo(row);
+        if(jArray[0]!=null){
+            for (var j = 1; j <= jArray[0].rows; j++) {
+                row = $j("<tr/>", { "class":"thR"}).appendTo(table); 
+                $j("<td/>", { "html":jArray[j].descr }).appendTo(row);
+                $j("<td/>", { "html":jArray[j].organizz }).appendTo(row);
+                $j("<td/>", { "html":jArray[j].data }).appendTo(row);
+                $j("<td/>", { "html":jArray[j].durata }).appendTo(row);
+                if(utenteSessh == jArray[j].organizz)$j("<td/>", { "html":jArray[j].iscritti, "onclick":"getIscritti("+jArray[j].id+")" }).appendTo(row);
+                else $j("<td/>", { "html":jArray[j].iscritti }).appendTo(row);
+                if (jArray[j].private == 1) $j("<td/>", { "html":"privato" }).appendTo(row);
+                else $j("<td/>", { "html":"pubblico" }).appendTo(row);
+                if(utenteSessh == jArray[j].organizz){
+                    $j("<td/>", { "html":"<button onclick=deleteEvento("+jArray[j].id+")> elimina </button>" }).appendTo(row);
+                }else{
+                    $j("<td/>", { "html":"<button onclick=disiscriviEvento("+jArray[j].id+",'"+utenteSessh+"')> disiscriviti </button>" }).appendTo(row);
+                }
+
+            }            
+        }
+    }
+
+    function getIscritti(id){
+        var param = 'info=9&idEvento=' + id;
+
+        $j.ajax({
+            url: 'json/events.php',
+            cache: false,
+            type: 'post',
+            dataType: 'json',
+            data: param,
+            success: function (response) {
+                $j('#iscrittiResult').empty();
+                if (response.result == 'ok') {
+                    document.getElementById('iscrittiAll').style.display='block';
+                    var table=$j("<table/>", {"id":"tabellaIscritti"});
+                    table.appendTo($j("#iscrittiResult"));
+                    var row = $j("<tr/>", { "class":"thR"}).appendTo(table);
+                    $j.each(response.elementi, function(){
+                        $j("<td/>", { "html":this.nome }).appendTo(row);
+                    });
+                } else {
+                    alert(response.errore);
+                }
+            },
+            error: function () {
+                alert("Could not find data");
+            }
+        });
+    }
+
+    function disiscriviEvento(evento,utente){
+        var param = 'info=8&idEvento=' + evento + '&uname=' + utente;
+
+        $j.ajax({
+            url: 'json/events.php',
+            cache: false,
+            type: 'post',
+            dataType: 'json',
+            data: param,
+            success: function (response) {
+                if (response.result == 'ok') {
+                    alert("disiscrizione completata");
+                    location.reload(); 
+                } else {
+                    alert(response.errore);
+                }
+            },
+            error: function () {
+                alert("Could not find data");
+            }
+        });
+    }
+
+    function deleteEvento(id){
+        var param = 'info=7&idEvento=' + id;
+
+        $j.ajax({
+            url: 'json/events.php',
+            cache: false,
+            type: 'post',
+            dataType: 'json',
+            data: param,
+            success: function (response) {
+                if (response.result == 'ok') {
+                    alert("eliminazione completata");
+                    location.reload(); 
+                } else {
+                    alert(response.errore);
+                }
+            },
+            error: function () {
+                alert("Could not find data");
+            }
+        });
+    }
 
     function getUserInfo(){
         <?php echo "var utente = '".$user."'" ?>;
@@ -161,9 +324,12 @@ $admin = isAdmin(); //1 se admin
             success:function(response) {
                 if (response.result=='ok') {
                     $j.each(response.elementi, function(){
-                        $j('#rnome').html("NOME: "+this.username);
-                        $j('#rmail').html("EMAIL: "+this.mail);
-                        $j('#rasso').html("ASSOCIAZIONE: "+this.associazione);
+                        $j('#rnome').html("<h3>NOME: "+this.username+"</h3>");
+                        $j('#rnome').css('color', 'rgb(255, 194, 14)');
+                        $j('#rmail').html("<h3>EMAIL: "+this.mail+"</h3>");
+                        $j('#rmail').css('color', 'rgb(255, 194, 14)');
+                        $j('#rasso').html("<h3>ASSOCIAZIONE: "+this.associazione+"</h3>");
+                        $j('#rasso').css('color', 'rgb(255, 194, 14)');
                     });
                 }else{
                     alert(response.error);

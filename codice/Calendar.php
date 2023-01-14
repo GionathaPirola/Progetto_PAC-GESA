@@ -117,6 +117,12 @@ function getEvents()
 <style>
     @import "layout.css";
 
+    .redbtn{
+        background-color: #f44336;
+        padding: 2px;
+        margin: 2px; 
+    }
+
     :root {
         --dark-body: #4d4c5a;
         --dark-main: #141529;
@@ -515,6 +521,7 @@ function getEvents()
                     <button type="button" onclick="document.getElementById('id03').style.display='none'"
                         class="cancelbtn">Cancel</button>
                 </div>
+                <div id= "div03"></div>
             </form>   
         </div>
 </body>
@@ -633,6 +640,7 @@ function getEvents()
 
     month_picker.onclick = () => {
         month_list.classList.add('show')
+        $j("#div03").empty();
     }
 
     let currDate = new Date()
@@ -644,17 +652,50 @@ function getEvents()
 
     document.querySelector('#prev-year').onclick = () => {
         --curr_year.value
+        $j("#div03").empty();
         generateCalendar(curr_month.value, curr_year.value)
     }
 
     document.querySelector('#next-year').onclick = () => {
         ++curr_year.value
+        $j("#div03").empty();
         generateCalendar(curr_month.value, curr_year.value)
     }
 
     function postitEvento(evento,j,i){
-        $j("<button/>", { "type":"button","html": evento[j].descr, "id":"post"+j, "name":"post"+(i+1) }).appendTo("#form03");
+        row = $j("<tr/>").appendTo($j("#div03"));
+        $j("<button/>", { "type":"button","html": evento[j].descr, "id":"post"+j, "name":"post"+(i+1) }).appendTo(row);
+        <?php 
+            if($admin == 1){
+                echo (' $j("<button/>", { "type":"button",class: "redbtn" ,"html": "elimina", "id":"del"+j, "name":"del"+(i+1) }).appendTo(row);');
+                echo (' $j("#del" + j).click(function(){ deleteEvento(jArray, j); }); ');
+            }
+        ?>
         $j("#post" + j).click(function(){ chooseEvento(jArray, j); }); 
+
+    }
+
+    function deleteEvento(evento,j){
+        var param = 'info=7&idEvento=' + evento[j].id;
+
+        $j.ajax({
+            url: 'json/events.php',
+            cache: false,
+            type: 'post',
+            dataType: 'json',
+            data: param,
+            success: function (response) {
+                if (response.result == 'ok') {
+                    alert("eliminazione completata");
+                    location.reload(); 
+                } else {
+                    alert(response.errore);
+                }
+            },
+            error: function () {
+                alert("Could not find data");
+            }
+        });
     }
 
     function chooseEvento(evento,j){
