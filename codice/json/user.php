@@ -7,12 +7,19 @@ $info = getvar("info");
 $evento = strtoupper(getvar("idEvento"));
 $posti = strtoupper(getvar("partecipanti"));
 $user = strtoupper(getvar("uname"));
+$asso = strtoupper(getvar("asso"));
 
 $conn = OpenCon();
 
 switch ($info) {
-    case 1: //Elenco Tipologie
+    case 1: //Info Utente
         $arr = getInfoUser();
+        break;
+    case 2: //nuova associazione
+        $arr = newAssociazione();
+        break;
+    case 3: //iscrizione ad associazione
+        $arr = subAssociazione();
         break;
 }
 
@@ -30,14 +37,121 @@ function getvar($name,$isint="") {
    }
 }
 
+function subAssociazione(){
+    global $conn,$asso,$user;
+    $arr = array();
+
+    $count = 0;
+
+    $sql = "SELECT count(*) as CNT
+		FROM soci 
+        WHERE associazione = '" . $asso . "' and utente= '" . $user . "'";
+
+    $result = $conn->query($sql);
+    $row = $result->fetch_assoc();
+    $count = $row['CNT'];
+
+    if ($count == 0) {
+        $sql4 = "SELECT count(*) as COUNT FROM associazione WHERE nome = '" . $asso . "'";
+        $result4 = $conn->query($sql4);
+        $row4 = $result4->fetch_assoc();   
+        
+        if($row4['COUNT'] > 0){
+            $sql3 = "INSERT INTO `soci`(`utente`, `associazione`) VALUES ('".$user."','".$asso."') ";
+        
+            $result3 = $conn->query($sql3);
+
+            if ($result3 === TRUE) {
+                $risposta = "ok";
+                $msg="";
+            } else {
+                $risposta = "no";
+                $msg='errore durante la creazione dell\'associazione';
+            }
+        } else {
+            $risposta='no';
+            $msg='associazione non esistente';
+        }
+    }else {
+        $risposta = 'no';
+        $msg = 'utente già iscritto';
+    }
+
+    CloseCon($conn);
+
+    $arr = array(
+        'result' => $risposta,
+        'errore' => $msg
+    );
+
+    return $arr;
+}
+
+function newAssociazione(){
+    global $conn,$asso;
+    $arr = array();
+    $count = 0;
+
+    $sql = "SELECT count(*) as CNT
+		FROM associazione 
+        WHERE nome = '" . $asso . "'";
+
+    $result = $conn->query($sql);
+    $row = $result->fetch_assoc();
+    $count = $row['CNT'];
+
+    if ($count == 0) {
+
+        $risposta = 'ok';
+        $msg = '';
+
+        $sql3 = "SELECT max(id) as ID
+		FROM associazione ";
+
+        if($result3 = $conn->query($sql3)){
+            $row3 = $result3->fetch_assoc();
+            $maxid = $row3['ID'] + 1;
+        }else{
+            $maxid = 1 ;
+        }
+
+        $sql2 = "INSERT INTO `associazione`(`id`, `nome`) 
+            VALUES ('" . $maxid . "','" . $asso . "')";
+
+        $result2 = $conn->query($sql2);
+
+        if ($result2 === TRUE) {
+            $risposta = "ok";
+            $msg = '';
+        } else {
+            $risposta = "no";
+            $msg = 'errore durante l\'inserimento';
+        }
+
+    } else {
+        $risposta = 'no';
+        $msg = 'associazione esistente';
+    }
+
+    CloseCon($conn);
+
+    $arr = array(
+        'result' => $risposta,
+        'errore' => $msg
+    );
+
+    return $arr;
+}
+
 function getInfoUser(){
     global $conn,$user;
 	$arr = array();
 	$val = array();
+    $val2 = array();
 
     //GET PARTECIPANTI
-    $sql = "SELECT username as NOME, mail as MAIL, associazione as ASSOCIAZIONE
-            from utente left join associazione on utente = username
+    $sql = "SELECT username as NOME, mail as MAIL
+            from utente left join soci on utente = username
             where username = '".$user."'";
 
     $result = $conn->query($sql);
@@ -50,10 +164,28 @@ function getInfoUser(){
             $val[]= array (							
 				'username' => $row['NOME'],
                 'mail' => $row['MAIL'],
-                'associazione' => $row['ASSOCIAZIONE'],
 			);
 
         }
+
+        $sql2 = "SELECT associazione as ASSO
+            from soci 
+            where utente = '".$user."'";
+
+        $result2 = $conn->query($sql2);
+
+        if ($result2->num_rows > 0) {
+            $risposta='ok';
+            $msg='';
+            while($row2 = $result2->fetch_assoc()) {
+    
+                $val2[]= array (							
+                    'associazione' => $row2['ASSO'],
+                );
+    
+            }
+        }
+    
     }else{
         $risposta='no';
         $msg='errore nella selezione dei dati';
@@ -63,6 +195,7 @@ function getInfoUser(){
 
 	$arr = array(
         'elementi' => $val,
+        'associazioni' => $val2,
 		'result' => $risposta,
 		'errore' => $msg
 	);

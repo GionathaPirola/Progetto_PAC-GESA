@@ -167,6 +167,13 @@ function getEvents()
  	</div>
 
     <div id="content" class="outer">  
+        <?php
+        if ($admin == 1) {
+            echo ( " <button onclick=\"document.getElementById('newAssociazione').style.display='block'\" style=\"width:20%\"> Nuova associazione </button> ");
+        }else{
+            echo ( " <button onclick=\"document.getElementById('subAssociazione').style.display='block'\" style=\"width:20%\"> Iscriviti ad associazione </button> ");
+        }
+        ?>
             <div id="result" class="scroll">
                 <div id="rnome"> </div>
                 <div id="rmail"> </div>
@@ -176,12 +183,36 @@ function getEvents()
 
             </div>
     </div>
-        <!-- POP UP per INSERIRE UNA NUOVA INFRASTRUTTURA -->
+        <!-- POP UP per VEDERE GLI ISCRITTI -->
     <div id="iscrittiAll" class="modal two" hidden>
     <form id="iscrittiAllForm" class="modal-content animate">
         <div id="iscrittiResult"></div>
         <button type="button" onclick="document.getElementById('iscrittiAll').style.display='none'"
                     class="cancelbtn">Cancel</button>
+    </form>
+    </div>
+    
+    <!-- POP UP per INSERIRE UNA NUOVA ASSOCIAZIONE -->
+    <div id="newAssociazione" class="modal two" hidden>
+    <form id="newAssoForm" class="modal-content animate">
+        <div id="allasso"></div>
+        <label for="newasso"><b>Nuova associazione</b></label>
+                <input type="text" placeholder="Inserire Associazione" name="newasso" required>
+        <button type="button" onclick="document.getElementById('newAssociazione').style.display='none'"
+                    class="cancelbtn">Cancel</button>
+        <button type="button" onclick="newAssociazione()">Inserisci Associazione</button>
+    </form>
+    </div>
+
+    <!-- POP UP per ISCRIVERSI AD UNA NUOVA ASSOCIAZIONE -->
+    <div id="subAssociazione" class="modal two" hidden>
+    <form id="subAssoForm" class="modal-content animate">
+        <div id="subasso"></div>
+        <label for="subasso"><b>Iscriviti ad associazione</b></label>
+                <input type="text" placeholder="Inserire Associazione" name="subasso" required>
+        <button type="button" onclick="document.getElementById('subAssociazione').style.display='none'"
+                    class="cancelbtn">Cancel</button>
+        <button type="button" onclick="subAssociazione()">Inserisci Associazione</button>
     </form>
     </div>
 </body>
@@ -203,6 +234,54 @@ function getEvents()
         $j("#showIcon").toggleClass("fas fa-caret-left fas fa-caret-right");
         var text = $j('#showText').text();
     })
+
+    function newAssociazione(){
+        var param = 'info=2&';
+        param += "asso=" +$j("input[name='newasso']").val();
+        
+        $j.ajax({
+            url: 'json/user.php',
+            cache: false,
+            type: 'post',
+            dataType: 'json',
+            data: param,
+            success: function (response) {
+                if (response.result == 'ok') {
+                    alert("inserimento completato");
+                } else {
+                    alert("inserimento fallito");
+                }
+            },
+            error: function () {
+                alert("Could not find data");
+            }
+        });
+    }
+
+    function subAssociazione(){
+        var param = 'info=3&';
+        param += "asso=" +$j("input[name='subasso']").val();
+        <?php echo "var utente = '" . $user . "'" ?>;
+        param += '&uname=' + utente ;
+        
+        $j.ajax({
+            url: 'json/user.php',
+            cache: false,
+            type: 'post',
+            dataType: 'json',
+            data: param,
+            success: function (response) {
+                if (response.result == 'ok') {
+                    alert("inserimento completato");
+                } else {
+                    alert("inserimento fallito");
+                }
+            },
+            error: function () {
+                alert("Could not find data");
+            }
+        });
+    }
 
     function printEvents(){
         $j('#eventsResult').empty();
@@ -315,6 +394,7 @@ function getEvents()
         <?php echo "var utente = '".$user."'" ?>;
         var param ='info=1&uname='+ utente ;
 
+        var textAsso = "";
         $j.ajax({
             url:'json/user.php', 
             cache:false,
@@ -328,9 +408,13 @@ function getEvents()
                         $j('#rnome').css('color', 'rgb(255, 194, 14)');
                         $j('#rmail').html("<h3>EMAIL: "+this.mail+"</h3>");
                         $j('#rmail').css('color', 'rgb(255, 194, 14)');
-                        $j('#rasso').html("<h3>ASSOCIAZIONE: "+this.associazione+"</h3>");
-                        $j('#rasso').css('color', 'rgb(255, 194, 14)');
+
                     });
+                    $j.each(response.associazioni, function(){
+                        textAsso += this.associazione + "; ";
+                    });
+                    $j('#rasso').html("<h3>ASSOCIAZIONE: "+textAsso+"</h3>");
+                    $j('#rasso').css('color', 'rgb(255, 194, 14)');
                 }else{
                     alert(response.error);
                 }
