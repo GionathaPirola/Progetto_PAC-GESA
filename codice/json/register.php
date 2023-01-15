@@ -57,16 +57,27 @@ function getInfo(){
                 $risposta = "ok";
 
                 if($gruppo!=""){
-                    $sql3 = "INSERT INTO `associazione`(`utente`, `associazione`) VALUES ('".$uname."','".$gruppo."') ";
+                    $sql4 = "SELECT count(*) as COUNT FROM associazione WHERE nome = '" . $gruppo . "'";
+                    $result4 = $conn->query($sql4);
+                    $row4 = $result4->fetch_assoc();   
                     
-                    $result3 = $conn->query($sql3);
-
-                    if ($result3 === TRUE) {
-                        $risposta = "ok";
+                    if($row4['COUNT'] > 0){
+                        $sql3 = "INSERT INTO `soci`(`utente`, `associazione`) VALUES ('".$uname."','".$gruppo."') ";
+                    
+                        $result3 = $conn->query($sql3);
+    
+                        if ($result3 === TRUE) {
+                            $risposta = "ok";
+                            $msg="";
+                        } else {
+                            $risposta = "no";
+                            $msg='errore durante la creazione dell\'associazione';
+                        }
                     } else {
-                        $risposta = "no";
-                        $msg='errore durante la creazione dell\'associazione';
+                        $risposta='no';
+                        $msg='associazione non esistente';
                     }
+
                 }
 
             } else {
