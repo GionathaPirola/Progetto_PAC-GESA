@@ -198,6 +198,8 @@ function getEvents()
         <div id="allasso"></div>
         <label for="newasso"><b>Nuova associazione</b></label>
                 <input type="text" placeholder="Inserire Associazione" name="newasso" required>
+        <label for="pswnew"><b>Password associazione</b></label>
+                <input type="text" placeholder="Inserire Password" name="pswnew" required>
         <button type="button" onclick="document.getElementById('newAssociazione').style.display='none'"
                     class="cancelbtn">Cancel</button>
         <button type="button" onclick="newAssociazione()">Inserisci Associazione</button>
@@ -210,6 +212,8 @@ function getEvents()
         <div id="subasso"></div>
         <label for="subasso"><b>Iscriviti ad associazione</b></label>
                 <input type="text" placeholder="Inserire Associazione" name="subasso" required>
+        <label for="pswasso"><b>Password associazione</b></label>
+                <input type="text" placeholder="Inserire Password" name="pswasso" required>
         <button type="button" onclick="document.getElementById('subAssociazione').style.display='none'"
                     class="cancelbtn">Cancel</button>
         <button type="button" onclick="subAssociazione()">Inserisci Associazione</button>
@@ -238,6 +242,7 @@ function getEvents()
     function newAssociazione(){
         var param = 'info=2&';
         param += "asso=" +$j("input[name='newasso']").val();
+        param += "&psw=" +$j("input[name='pswnew']").val();
         
         $j.ajax({
             url: 'json/user.php',
@@ -263,6 +268,7 @@ function getEvents()
         param += "asso=" +$j("input[name='subasso']").val();
         <?php echo "var utente = '" . $user . "'" ?>;
         param += '&uname=' + utente ;
+        param += "&psw=" +$j("input[name='pswasso']").val();
         
         $j.ajax({
             url: 'json/user.php',

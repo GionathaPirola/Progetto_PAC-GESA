@@ -8,6 +8,7 @@ $evento = strtoupper(getvar("idEvento"));
 $posti = strtoupper(getvar("partecipanti"));
 $user = strtoupper(getvar("uname"));
 $asso = strtoupper(getvar("asso"));
+$psw = getvar("psw");
 
 $conn = OpenCon();
 
@@ -38,7 +39,7 @@ function getvar($name,$isint="") {
 }
 
 function subAssociazione(){
-    global $conn,$asso,$user;
+    global $conn,$asso,$user,$psw;
     $arr = array();
 
     $count = 0;
@@ -52,7 +53,7 @@ function subAssociazione(){
     $count = $row['CNT'];
 
     if ($count == 0) {
-        $sql4 = "SELECT count(*) as COUNT FROM associazione WHERE nome = '" . $asso . "'";
+        $sql4 = "SELECT count(*) as COUNT FROM associazione WHERE nome = '" . $asso . "' and password = '" . $psw . "'";
         $result4 = $conn->query($sql4);
         $row4 = $result4->fetch_assoc();   
         
@@ -88,7 +89,7 @@ function subAssociazione(){
 }
 
 function newAssociazione(){
-    global $conn,$asso;
+    global $conn,$asso,$psw;
     $arr = array();
     $count = 0;
 
@@ -115,8 +116,8 @@ function newAssociazione(){
             $maxid = 1 ;
         }
 
-        $sql2 = "INSERT INTO `associazione`(`id`, `nome`) 
-            VALUES ('" . $maxid . "','" . $asso . "')";
+        $sql2 = "INSERT INTO `associazione`(`id`, `nome`, `password`) 
+            VALUES ('" . $maxid . "','" . $asso . "','" . $psw . "')";
 
         $result2 = $conn->query($sql2);
 
