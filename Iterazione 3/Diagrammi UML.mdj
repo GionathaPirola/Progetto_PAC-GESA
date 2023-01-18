@@ -2780,13 +2780,30 @@
 											"height": 13,
 											"text": "+DisicrizioneEvento(id_evento, nome)",
 											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLOperationView",
+											"_id": "AAAAAAGFxHhiPNh9mbM=",
+											"_parent": {
+												"$ref": "AAAAAAGFJNTBJ5T7OrU="
+											},
+											"model": {
+												"$ref": "AAAAAAGFxHhiM9h6jPg="
+											},
+											"font": "Arial;13;0",
+											"left": 301,
+											"top": 636,
+											"width": 464.98486328125,
+											"height": 13,
+											"text": "+DisiscrizioneAssociazione(nome, associazione)",
+											"horizontalAlignment": 0
 										}
 									],
 									"font": "Arial;13;0",
 									"left": 296,
 									"top": 481,
 									"width": 474.98486328125,
-									"height": 158
+									"height": 173
 								},
 								{
 									"_type": "UMLReceptionCompartmentView",
@@ -2826,7 +2843,7 @@
 							"left": 296,
 							"top": 456,
 							"width": 474.98486328125,
-							"height": 183,
+							"height": 198,
 							"nameCompartment": {
 								"$ref": "AAAAAAGFJNTBJpT1NGI="
 							},
@@ -2873,7 +2890,7 @@
 											"visible": false,
 											"font": "Arial;13;0",
 											"left": -624,
-											"top": 80,
+											"top": 112,
 											"height": 13
 										},
 										{
@@ -2884,7 +2901,7 @@
 											},
 											"font": "Arial;13;1",
 											"left": 293,
-											"top": 655,
+											"top": 671,
 											"width": 477.31201171875,
 											"height": 13,
 											"text": "Gestore Edificio"
@@ -2898,7 +2915,7 @@
 											"visible": false,
 											"font": "Arial;13;0",
 											"left": -624,
-											"top": 80,
+											"top": 112,
 											"width": 80.9072265625,
 											"height": 13,
 											"text": "(from Model1)"
@@ -2912,14 +2929,14 @@
 											"visible": false,
 											"font": "Arial;13;0",
 											"left": -624,
-											"top": 80,
+											"top": 112,
 											"height": 13,
 											"horizontalAlignment": 1
 										}
 									],
 									"font": "Arial;13;0",
 									"left": 288,
-									"top": 648,
+									"top": 664,
 									"width": 487.31201171875,
 									"height": 25,
 									"stereotypeLabel": {
@@ -2947,7 +2964,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": -344,
-									"top": 1017,
+									"top": 1033,
 									"width": 487.31201171875,
 									"height": 10
 								},
@@ -2972,7 +2989,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 293,
-											"top": 678,
+											"top": 694,
 											"width": 477.31201171875,
 											"height": 13,
 											"text": "+LogIn(nome, password): Utente",
@@ -2989,7 +3006,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 293,
-											"top": 693,
+											"top": 709,
 											"width": 477.31201171875,
 											"height": 13,
 											"text": "+LogOut()",
@@ -3006,7 +3023,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 293,
-											"top": 708,
+											"top": 724,
 											"width": 477.31201171875,
 											"height": 13,
 											"text": "+CreaStanza(area, capienza, tipologia, posizione, tempo_pul, costo, stato): Stanza",
@@ -3023,7 +3040,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 293,
-											"top": 723,
+											"top": 739,
 											"width": 477.31201171875,
 											"height": 13,
 											"text": "+VisualizzaStanze(): Stanza 0...n",
@@ -3040,7 +3057,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 293,
-											"top": 738,
+											"top": 754,
 											"width": 477.31201171875,
 											"height": 13,
 											"text": "+VisualizzaEventi(): Eventi 0...n",
@@ -3057,7 +3074,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 293,
-											"top": 753,
+											"top": 769,
 											"width": 477.31201171875,
 											"height": 13,
 											"text": "+InserisciAssociazione(nome_associazione, password_associazione)",
@@ -3066,7 +3083,7 @@
 									],
 									"font": "Arial;13;0",
 									"left": 288,
-									"top": 673,
+									"top": 689,
 									"width": 487.31201171875,
 									"height": 98
 								},
@@ -3082,7 +3099,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": -944,
-									"top": 384,
+									"top": 400,
 									"width": 10,
 									"height": 10
 								},
@@ -3098,7 +3115,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": -944,
-									"top": 384,
+									"top": 400,
 									"width": 10,
 									"height": 10
 								}
@@ -3106,7 +3123,7 @@
 							"font": "Arial;13;0",
 							"containerChangeable": true,
 							"left": 288,
-							"top": 648,
+							"top": 664,
 							"width": 487.31201171875,
 							"height": 123,
 							"nameCompartment": {
@@ -3458,7 +3475,7 @@
 											"visible": false,
 											"font": "Arial;13;0",
 											"left": -1376,
-											"top": 688,
+											"top": 720,
 											"height": 13
 										},
 										{
@@ -3469,7 +3486,7 @@
 											},
 											"font": "Arial;13;1",
 											"left": 437,
-											"top": 791,
+											"top": 807,
 											"width": 195.482421875,
 											"height": 13,
 											"text": "Sistema Assegnazione Stanza"
@@ -3483,7 +3500,7 @@
 											"visible": false,
 											"font": "Arial;13;0",
 											"left": -1376,
-											"top": 688,
+											"top": 720,
 											"width": 80.9072265625,
 											"height": 13,
 											"text": "(from Model1)"
@@ -3497,14 +3514,14 @@
 											"visible": false,
 											"font": "Arial;13;0",
 											"left": -1376,
-											"top": 688,
+											"top": 720,
 											"height": 13,
 											"horizontalAlignment": 1
 										}
 									],
 									"font": "Arial;13;0",
 									"left": 432,
-									"top": 784,
+									"top": 800,
 									"width": 205.482421875,
 									"height": 25,
 									"stereotypeLabel": {
@@ -3532,7 +3549,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 432,
-									"top": 809,
+									"top": 825,
 									"width": 205.482421875,
 									"height": 10
 								},
@@ -3557,7 +3574,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 437,
-											"top": 814,
+											"top": 830,
 											"width": 195.482421875,
 											"height": 13,
 											"text": "+AssegnaStanza(Evento): Stanza",
@@ -3566,7 +3583,7 @@
 									],
 									"font": "Arial;13;0",
 									"left": 432,
-									"top": 809,
+									"top": 825,
 									"width": 205.482421875,
 									"height": 23
 								},
@@ -3582,7 +3599,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": -688,
-									"top": 344,
+									"top": 360,
 									"width": 10,
 									"height": 10
 								},
@@ -3598,7 +3615,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": -688,
-									"top": 344,
+									"top": 360,
 									"width": 10,
 									"height": 10
 								}
@@ -3606,7 +3623,7 @@
 							"font": "Arial;13;0",
 							"containerChangeable": true,
 							"left": 432,
-							"top": 784,
+							"top": 800,
 							"width": 205.482421875,
 							"height": 49,
 							"nameCompartment": {
@@ -3907,6 +3924,34 @@
 										"$ref": "AAAAAAGFu8sdI7tG424="
 									},
 									"name": "nome",
+									"type": ""
+								}
+							]
+						},
+						{
+							"_type": "UMLOperation",
+							"_id": "AAAAAAGFxHhiM9h6jPg=",
+							"_parent": {
+								"$ref": "AAAAAAGFJNTBJpTylTM="
+							},
+							"name": "DisiscrizioneAssociazione",
+							"parameters": [
+								{
+									"_type": "UMLParameter",
+									"_id": "AAAAAAGFxHi99diBMXU=",
+									"_parent": {
+										"$ref": "AAAAAAGFxHhiM9h6jPg="
+									},
+									"name": "nome",
+									"type": ""
+								},
+								{
+									"_type": "UMLParameter",
+									"_id": "AAAAAAGFxHi99diCcZ8=",
+									"_parent": {
+										"$ref": "AAAAAAGFxHhiM9h6jPg="
+									},
+									"name": "associazione",
 									"type": ""
 								}
 							]
