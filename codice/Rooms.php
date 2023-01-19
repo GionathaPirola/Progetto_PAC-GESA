@@ -48,7 +48,7 @@ $user = strtoupper($_SESSION['username']);
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>La Casa di Bombo</title>
+    <title>Stanze</title>
 </head>
 
 <body>
@@ -71,8 +71,7 @@ $user = strtoupper($_SESSION['username']);
             <div class="profile">
                 <a href="Profile.php">
                     <img src="img/profile.png" width="30%"></img></a>
-                <h3> HOMEPAGE</h3>
-                <p> woof woof </p>
+                <h3> <?php echo $user ?></h3>
             </div>
 
             <ul>
@@ -92,7 +91,7 @@ $user = strtoupper($_SESSION['username']);
                     </a>
                 </li>
                 <li>
-                    <a style="color: blueviolet">
+                    <a style="color: rgb(228, 159, 21)">
                         <i class="fas fa-home"></i> VISUALIZZA STANZE
                     </a>
                 </li>
@@ -101,18 +100,14 @@ $user = strtoupper($_SESSION['username']);
 
             <div id="footer" class="footer">
                 <p class="indirizzo">
-
-                    Indirizzo<br />
-                    Paese<br />
-                    Telefono<br />
-                    Fax</p>
-
+			        <p>Powered By</p>
+                    <p>Alessandro Colombo, Gionatha Pirola</p>
                 <p class="indirizzo"></p>
             </div>
         </div>
 
         <div id="content" class="outer">
-            <h3>ELENCO STANZE <br>
+            <h3 style="color:  rgb(228, 159, 21);">ELENCO STANZE <br>
                 <button onclick="document.getElementById('newRoom').style.display='block'" style="width:20%"> Nuova stanza</button> 
                 <button onclick="document.getElementById('newInfr').style.display='block'" style="width:20%"> Nuova infrastruttura </button> 
                 <button onclick="document.getElementById('newTipo').style.display='block'" style="width:20%"> Nuova tipologia stanza</button> </h3>
@@ -262,8 +257,6 @@ $user = strtoupper($_SESSION['username']);
     hamburger.addEventListener("click", function () {
         document.querySelector("body").classList.toggle("active");
         $j("#showIcon").toggleClass("fas fa-caret-left fas fa-caret-right");
-        var text = $j('#showText').text();
-        $j('#showText').text(text == "STANZE" ? "" : "STANZE");
     })
 
     function getInfrastrutture() {

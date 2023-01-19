@@ -7,6 +7,7 @@ $uname = strtoupper(getvar("uname"));
 $psw = getvar("psw");
 $mail = getvar("mail");
 $gruppo = strtoupper(getvar("gruppo"));
+$pswasso = getvar("pswasso");
 
 $conn = OpenCon();
 
@@ -29,7 +30,7 @@ function getvar($name,$isint="") {
 //SQL
 
 function getInfo(){
-    global $conn,$uname,$psw,$mail,$gruppo;
+    global $conn,$uname,$psw,$mail,$gruppo,$pswasso;
 	$arr = array();
 	$val = array();
 
@@ -57,7 +58,7 @@ function getInfo(){
                 $risposta = "ok";
 
                 if($gruppo!=""){
-                    $sql4 = "SELECT count(*) as COUNT FROM associazione WHERE nome = '" . $gruppo . "'";
+                    $sql4 = "SELECT count(*) as COUNT FROM associazione WHERE nome = '" . $gruppo . "' and password = '" . $pswasso . "'";
                     $result4 = $conn->query($sql4);
                     $row4 = $result4->fetch_assoc();   
                     

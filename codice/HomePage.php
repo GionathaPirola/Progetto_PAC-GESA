@@ -159,7 +159,6 @@ $admin = isAdmin(); //1 se admin
     hamburger.addEventListener("click", function(){
         document.querySelector("body").classList.toggle("active");
         $j("#showIcon").toggleClass("fas fa-caret-left fas fa-caret-right");
-        var text = $j('#showText').text();
     })
 
 
