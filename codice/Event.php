@@ -213,6 +213,11 @@ $admin = isAdmin(); //1 se admin
                     <h3 for="pubblico">PUBBLICO</h3><input type="radio" id="pubblico" name="public" value="0">
                     <h3 for="privato">PRIVATO<h3><input type="radio" id="privato" name="public" value="1">
 
+                    <label for="asso"><b>Associazione</b></label>
+                    <select name="asso" id="associazione" required>
+                        <option value="All"> GENERICO </option>
+                    </select>
+
                     <label for="tipo"><b>Tipologia</b></label>
                     <select name="tipo" id="tipologia" required>
                         <option value="All"> GENERICO </option>
@@ -270,6 +275,7 @@ $admin = isAdmin(); //1 se admin
     $j(function () {
         getInfrastrutture();
         getTipologie();
+        getAssociazioni()
     });
 
     var hamburger = document.querySelector(".hamburger");
@@ -316,6 +322,31 @@ $admin = isAdmin(); //1 se admin
                     $j("#tipologia").empty();
                     $j.each(response.elementi, function () {
                         $j("<option/>", { "value": this.id, "text": this.descr }).appendTo($j("#tipologia"));
+                    });
+                }
+            },
+            error: function () {
+                alert("Could not find data");
+            }
+        });
+    }
+
+    function getAssociazioni() {
+        <?php echo "var utente = '" . $user . "'" ?>;
+        var param = 'info=10&uname='+utente;
+
+        $j.ajax({
+            url: 'json/events.php',
+            cache: false,
+            type: 'post',
+            dataType: 'json',
+            data: param,
+            success: function (response) {
+                if (response.result == 'ok') {
+                    $j("#associazione").empty();
+                    $j("<option/>", { "value": "", "text": "APERTO A TUTTI" }).appendTo($j("#associazione"));
+                    $j.each(response.elementi, function () {
+                        $j("<option/>", { "value": this.descr, "text": this.descr }).appendTo($j("#associazione"));
                     });
                 }
             },

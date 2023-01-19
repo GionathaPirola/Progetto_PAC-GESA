@@ -15,6 +15,7 @@ $privacy = strtoupper(getvar("public"));
 $tipo = strtoupper(getvar("tipo"));
 $luogo = strtoupper(getvar("luogo"));
 $idstanza = strtoupper(getvar("idstanza"));
+$asso = strtoupper(getvar("asso"));
 
 $infrastrutture = array();
 
@@ -48,6 +49,9 @@ switch ($info) {
         break;
     case 9: //elenco iscritti
         $arr = getIscritti();
+        break;
+    case 10: //elenco associazioni
+        $arr = getAssociazioni();
         break;
 }
 
@@ -159,7 +163,7 @@ function deleteEvento(){
 }
 
 function addEvento(){
-    global $conn, $posti, $user, $nome, $data, $time, $durata, $privacy, $idstanza;
+    global $conn, $posti, $user, $nome, $data, $time, $durata, $privacy, $idstanza, $asso;
     $arr = array();
 
     $inizio = substr($data,0,4)."".substr($data,5,2)."".substr($data,8,2)."".substr($time,0,2)."00";
@@ -176,8 +180,8 @@ function addEvento(){
         }
     }
 
-    $sql = "INSERT INTO `eventi`(`id`, `descr`, `private`, `stanza`, `organizz`, `data`, `durata`, `iscritti`) 
-    VALUES ('".$id."','".$nome."','".$privacy."','".$idstanza."','".$user."','".$inizio."','".$durata."','".$posti."')";
+    $sql = "INSERT INTO `eventi`(`id`, `descr`, `private`, `stanza`, `organizz`, `data`, `durata`, `iscritti`, `associazione`) 
+    VALUES ('".$id."','".$nome."','".$privacy."','".$idstanza."','".$user."','".$inizio."','".$durata."','".$posti."','".$asso."')";
 
     $result = $conn->query($sql);
 
@@ -635,6 +639,45 @@ function getTipo()
 
             $val[] = array(
                 'id' => $row['ID'],
+                'descr' => $row['DESCR']
+            );
+
+        }
+    } else {
+        $risposta = 'no';
+        $msg = 'utente inesistente';
+    }
+
+    CloseCon($conn);
+
+    $arr = array(
+        'elementi' => $val,
+        'result' => $risposta,
+        'errore' => $msg
+    );
+
+    return $arr;
+
+}
+
+function getAssociazioni()
+{
+    global $conn,$user;
+    $arr = array();
+    $val = array();
+
+    $sql = "SELECT distinct associazione as DESCR
+		FROM soci 
+        WHERE utente = '".$user."'";
+
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+        $risposta = 'ok';
+        $msg = '';
+        while ($row = $result->fetch_assoc()) {
+
+            $val[] = array(
                 'descr' => $row['DESCR']
             );
 

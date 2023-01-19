@@ -35,13 +35,13 @@ function getEvents()
     $val = array();
 
     if ($admin == 1) {
-        $sql = "SELECT distinct id as ID, descr as DESCR, private as PRIVATE, stanza as STANZA, organizz as ORGANIZZ, data as DATA, durata as DURATA, iscritti as ISCRITTI, B.associazione as ASSOCIAZIONE
-		        FROM eventi A left join soci B on A.organizz = B.utente";
+        $sql = "SELECT distinct id as ID, descr as DESCR, private as PRIVATE, stanza as STANZA, organizz as ORGANIZZ, data as DATA, durata as DURATA, iscritti as ISCRITTI, associazione as ASSOCIAZIONE
+		        FROM eventi A";
     } else {
         //seleziona -> stesso organizzatore o -> stessa associazione,pubbliche
-        $sql = "SELECT distinct id as ID, descr as DESCR, private as PRIVATE, stanza as STANZA, organizz as ORGANIZZ, data as DATA, durata as DURATA, iscritti as ISCRITTI, B.associazione as ASSOCIAZIONE
-		        FROM eventi A left join soci B on A.organizz = B.utente left join soci C on C.associazione = B.associazione
-                WHERE  (organizz = '" . $user . "') or (C.utente = '" . $user . "' and private = '0') ";
+        $sql = "SELECT distinct id as ID, descr as DESCR, private as PRIVATE, stanza as STANZA, organizz as ORGANIZZ, data as DATA, durata as DURATA, iscritti as ISCRITTI, A.associazione as ASSOCIAZIONE
+		        FROM eventi A left join soci B on A.associazione = B.associazione
+                WHERE  (organizz = '" . $user . "') or (B.utente = '" . $user . "' and private = '0') or (A.associazione = '')";
     }
 
     $result = $conn->query($sql);

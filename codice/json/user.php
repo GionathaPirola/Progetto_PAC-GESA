@@ -22,6 +22,9 @@ switch ($info) {
     case 3: //iscrizione ad associazione
         $arr = subAssociazione();
         break;
+    case 4: //discrizione associazione
+        $arr = desubAssociazione();
+        break;
 }
 
 echo json_encode($arr);
@@ -36,6 +39,33 @@ function getvar($name,$isint="") {
            return "";
        }
    }
+}
+
+function desubAssociazione(){
+    global $conn, $asso, $user;
+    $arr = array();
+
+    $sql = "DELETE FROM `soci` WHERE `utente`= '".$user."' and `associazione` = '".$asso."'";
+
+    $result = $conn->query($sql);
+    
+    if ($result === TRUE) {
+        $risposta = "ok";
+        $msg="";
+    } else {
+        $risposta = "no";
+        $msg='errore durante la disicrizione dall\'associazione';
+    }
+
+    CloseCon($conn);
+
+    $arr = array(
+        'result' => $risposta,
+        'errore' => $msg
+    );
+
+    return $arr;
+
 }
 
 function subAssociazione(){
