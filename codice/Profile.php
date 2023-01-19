@@ -106,7 +106,15 @@ function getEvents()
 <script language="JavaScript" type="text/javascript" src="js/calendar.js"></script>
 <script language="JavaScript" type="text/javascript" src="js/calendar-it.js"></script>
 <!-- HTML-->
-<style> @import "layout.css"; </style>
+<style>
+ @import "layout.css"; 
+
+ .associazione:hover{
+    color: rgb(170, 55, 55);
+    cursor: pointer;
+ }
+ 
+ </style>
 <head>
 <link rel="stylesheet" href="fontawesome-free-5.8.1-web/css/all.css">
 <meta charset="UTF-8">
@@ -396,6 +404,34 @@ function getEvents()
         });
     }
 
+    function desub(asso){
+        <?php echo "var utente = '".$user."'" ?>;
+        var param ='info=4&uname='+ utente ; 
+        param +='&asso='+ asso ;  
+        
+        let text = "Vuoi disiscriverti da " + asso + " ?";
+        if (confirm(text) == true) {
+            $j.ajax({
+                url: 'json/user.php',
+                cache: false,
+                type: 'post',
+                dataType: 'json',
+                data: param,
+                success: function (response) {
+                    if (response.result == 'ok') {
+                        alert("disicrizione completata");
+                        location.reload(); 
+                    } else {
+                        alert(response.errore);
+                    }
+                },
+                error: function () {
+                    alert("Could not find data");
+                }
+            });
+        }
+    }
+
     function getUserInfo(){
         <?php echo "var utente = '".$user."'" ?>;
         var param ='info=1&uname='+ utente ;
@@ -417,8 +453,9 @@ function getEvents()
 
                     });
                     $j.each(response.associazioni, function(){
-                        textAsso += this.associazione + "; ";
+                        textAsso += "<i class='associazione' onclick='desub(\""+ this.associazione +"\")'>" + this.associazione + "</i> | ";
                     });
+                    textAsso = textAsso.slice(0, -2); 
                     $j('#rasso').html("<h3>ASSOCIAZIONE: "+textAsso+"</h3>");
                     $j('#rasso').css('color', 'rgb(255, 194, 14)');
                 }else{

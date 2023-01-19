@@ -36,11 +36,11 @@ function getEvents()
 
     if ($admin == 1) {
         $sql = "SELECT distinct id as ID, descr as DESCR, private as PRIVATE, stanza as STANZA, organizz as ORGANIZZ, data as DATA, durata as DURATA, iscritti as ISCRITTI, B.associazione as ASSOCIAZIONE
-		        FROM eventi A join soci B on A.organizz = B.utente";
+		        FROM eventi A left join soci B on A.organizz = B.utente";
     } else {
         //seleziona -> stesso organizzatore o -> stessa associazione,pubbliche
         $sql = "SELECT distinct id as ID, descr as DESCR, private as PRIVATE, stanza as STANZA, organizz as ORGANIZZ, data as DATA, durata as DURATA, iscritti as ISCRITTI, B.associazione as ASSOCIAZIONE
-		        FROM eventi A join soci B on A.organizz = B.utente join soci C on C.associazione = B.associazione
+		        FROM eventi A left join soci B on A.organizz = B.utente left join soci C on C.associazione = B.associazione
                 WHERE  (organizz = '" . $user . "') or (C.utente = '" . $user . "' and private = '0') ";
     }
 
@@ -448,7 +448,7 @@ function getEvents()
             <div class="light">
                 <div class="calendar">
                     <div class="calendar-header">
-                        <span class="month-picker" id="month-picker">April</span>
+                        <span class="month-picker" id="month-picker">Aprile</span>
                         <div class="year-picker">
                             <span class="year-change" id="prev-year">
                                 <pre><</pre>
@@ -461,13 +461,13 @@ function getEvents()
                     </div>
                     <div class="calendar-body">
                         <div class="calendar-week-day">
-                            <div>Sun</div>
-                            <div>Mon</div>
-                            <div>Tue</div>
-                            <div>Wed</div>
-                            <div>Thu</div>
-                            <div>Fri</div>
-                            <div>Sat</div>
+                            <div>Dom</div>
+                            <div>Lun</div>
+                            <div>Mar</div>
+                            <div>Mer</div>
+                            <div>Gio</div>
+                            <div>Ven</div>
+                            <div>Sab</div>
                         </div>
                         <div class="calendar-days"></div>
                     </div>
@@ -556,7 +556,7 @@ function getEvents()
     //CALENDAR
     let calendar = document.querySelector('.calendar')
 
-    const month_names = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+    const month_names = ['Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno', 'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre']
 
     isLeapYear = (year) => {
         return (year % 4 === 0 && year % 100 !== 0 && year % 400 !== 0) || (year % 100 === 0 && year % 400 === 0)
@@ -584,9 +584,8 @@ function getEvents()
         calendar_header_year.innerHTML = year
 
         // get first day of month
-
         let first_day = new Date(year, month, 1)
-
+        var eventflag = false;
         for (let i = 0; i <= days_of_month[month] + first_day.getDay() - 1; i++) {
             $j("<div/>", { "id": "day" + i  }).appendTo(calendar_days);
             day = document.getElementById("day" + i)
@@ -599,26 +598,28 @@ function getEvents()
                                 <span></span>`
                 if (i - first_day.getDay() + 1 === currDate.getDate() && year === currDate.getFullYear() && month === currDate.getMonth()) {
                     day.classList.add('curr-date')
-                } else {
-                    if(jArray[0]!=null){
-                        for (var arr = 1; arr <= jArray[0].rows; arr++) {
-                            if (year == jArray[arr].data.substr(0, 4)) {
-                                if (month == jArray[arr].data.substr(4, 2) - 1) {
-                                    if (i - first_day.getDay() + 1 == jArray[arr].data.substr(6, 2)) {
-                                        day.classList.add('event-date')
-                                        index = arr
-                                        for (let j = 0; j <= days_of_month[month] + first_day.getDay() - 1; j++) {  
-                                            if(j == index) {
-                                                $j("#day" + i).click(function(){ showEvento(jArray, j, i); }); 
-                                                postitEvento(jArray, j, i)
-                                            }
+                }
+                if(jArray[0]!=null){
+                    for (var arr = 1; arr <= jArray[0].rows; arr++) {
+                        eventflag = false;
+                        if (year == jArray[arr].data.substr(0, 4)) {
+                            if (month == jArray[arr].data.substr(4, 2) - 1) {
+                                if (i - first_day.getDay() + 1 == jArray[arr].data.substr(6, 2)) {
+                                    day.classList.add('event-date')
+                                    for (var arr2 = 1; arr2 < arr; arr2++) {
+                                        if(jArray[arr].id == jArray[arr2].id ){
+                                            eventflag = true;
                                         }
                                     }
-                                } else { continue; }
-                            } else { continue; }
-                        }
+                                    if(eventflag == false){
+                                        $j("#day" + i).click(function(){ showEvento(jArray, arr, i); }); 
+                                        postitEvento(jArray, arr, i)
+                                    }
+                                }
+                            } 
+                        } 
                     }
-                }
+                } 
             }
         }
     }
@@ -720,7 +721,9 @@ function getEvents()
     function showEvento(evento, j, i ) {
         for( k=0; k<= 31; k++){
             $j("button[name=post"+k+"]").hide();
+            $j("button[name=del"+k+"]").hide();
         }
+        $j("button[name=del"+(i+1)+"]").show();
         $j("button[name=post"+(i+1)+"]").show();
         postit.style.display = "block";
     }
