@@ -113,6 +113,28 @@ function getEvents()
     color: rgb(170, 55, 55);
     cursor: pointer;
  }
+
+ td {
+
+    vertical-align: middle;
+    text-align: center;
+    border-color: white;
+ }
+
+ .thD{
+    padding: 10px;
+    color : white;
+    border: 2px solid white; 
+ }
+
+ .thD2{
+    padding: 2px;
+    border-radius: 100px 50px;
+    border: 2px solid white;
+    color:black;
+    font-weight:bold; 
+    background-color: white;
+ }
  
  </style>
 <head>
@@ -298,33 +320,33 @@ function getEvents()
     }
 
     function printEvents(){
+        <?php echo "var utente = '" . $user . "'" ?>;
         $j('#eventsResult').empty();
         var table=$j("<table/>", {"id":"tabella"});
         table.appendTo($j("#eventsResult"));
         var row = $j("<tr/>", { "class":"thR"}).appendTo(table); 
-        $j("<td/>", { "html":"Descrizione" }).appendTo(row);
-        $j("<td/>", { "html":"Organizzatore" }).appendTo(row);
-        $j("<td/>", { "html":"Data" }).appendTo(row);
-        $j("<td/>", { "html":"Durata" }).appendTo(row);
-        $j("<td/>", { "html":"Iscritti" }).appendTo(row);
-        $j("<td/>", { "html":"Visibilità" }).appendTo(row);
+        $j("<td/>", { "html":"DESCRIZIONE", "class":"thD" }).appendTo(row);
+        $j("<td/>", { "html":"ORGANIZZATORE", "class":"thD" }).appendTo(row);
+        $j("<td/>", { "html":"DATA", "class":"thD" }).appendTo(row);
+        $j("<td/>", { "html":"DURATA", "class":"thD" }).appendTo(row);
+        $j("<td/>", { "html":"N. ISCRITTI", "class":"thD" }).appendTo(row);
+        $j("<td/>", { "html":"VISIBILITà", "class":"thD" }).appendTo(row);
         if(jArray[0]!=null){
             for (var j = 1; j <= jArray[0].rows; j++) {
                 row = $j("<tr/>", { "class":"thR"}).appendTo(table); 
-                $j("<td/>", { "html":jArray[j].descr }).appendTo(row);
-                $j("<td/>", { "html":jArray[j].organizz }).appendTo(row);
-                $j("<td/>", { "html":jArray[j].data }).appendTo(row);
-                $j("<td/>", { "html":jArray[j].durata }).appendTo(row);
-                if(utenteSessh == jArray[j].organizz)$j("<td/>", { "html":jArray[j].iscritti, "onclick":"getIscritti("+jArray[j].id+")" }).appendTo(row);
-                else $j("<td/>", { "html":jArray[j].iscritti }).appendTo(row);
-                if (jArray[j].private == 1) $j("<td/>", { "html":"privato" }).appendTo(row);
-                else $j("<td/>", { "html":"pubblico" }).appendTo(row);
-                if(utenteSessh == jArray[j].organizz){
-                    $j("<td/>", { "html":"<button onclick=deleteEvento("+jArray[j].id+")> elimina </button>" }).appendTo(row);
+                $j("<td/>", { "html":jArray[j].descr , "class":"thD2" }).appendTo(row);
+                $j("<td/>", { "html":jArray[j].organizz , "class":"thD2" }).appendTo(row);
+                $j("<td/>", { "class":"thD2" ,"html":jArray[j].data.substr(6,2) + "/" + jArray[j].data.substr(4,2)+ "/"+jArray[j].data.substr(0,4)+" "+jArray[j].data.substr(8,2)+":"+jArray[j].data.substr(10,2) }).appendTo(row);
+                $j("<td/>", { "class":"thD2" ,"html":jArray[j].durata + " ore"}).appendTo(row);
+                if(trim(utente) == trim(jArray[j].organizz)) $j("<td/>", {  "class":"thD2" ,"html":jArray[j].iscritti, "style":"cursor:pointer","onclick":"getIscritti("+jArray[j].id+")" }).appendTo(row);
+                else $j("<td/>", {  "class":"thD2" ,"html":jArray[j].iscritti }).appendTo(row);
+                if (jArray[j].private == 1) $j("<td/>", {  "class":"thD2" ,"html":"privato" }).appendTo(row);
+                else $j("<td/>", {  "class":"thD2" ,"html":"pubblico" }).appendTo(row);
+                if(trim(utente) == trim(jArray[j].organizz)){
+                    $j("<td/>", {  "html":"<button onclick=deleteEvento("+jArray[j].id+")> elimina </button>" }).appendTo(row);
                 }else{
-                    $j("<td/>", { "html":"<button onclick=disiscriviEvento("+jArray[j].id+",'"+utenteSessh+"')> disiscriviti </button>" }).appendTo(row);
+                    $j("<td/>", {  "html":"<button onclick=disiscriviEvento("+jArray[j].id+",'"+trim(utente)+"')> disiscriviti </button>" }).appendTo(row);
                 }
-
             }            
         }
     }
