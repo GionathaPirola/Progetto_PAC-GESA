@@ -151,7 +151,7 @@ img.avatar {
       <label for="gruppo"><b>Associazione</b></label>
       <input type="text" placeholder="Inserisci Associazione" name="gruppo" required>
 
-      <label for="pswasso"><b>Associazione</b></label>
+      <label for="pswasso"><b>Password Associazione</b></label>
       <input type="text" placeholder="Inserisci Password Associazione" name="pswasso" required>
     </div>
 

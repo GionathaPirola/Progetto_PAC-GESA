@@ -41,6 +41,18 @@ $user = strtoupper($_SESSION['username']);
 <!-- HTML-->
 <style>
     @import "layout.css";
+
+    td {
+        vertical-align: middle;
+        text-align: center;
+        border-color: white;
+    }
+
+    .thD{
+        padding: 10px;
+        color : white;
+        border: 2px dotted white; 
+    }
 </style>
 
 <head>
@@ -374,22 +386,22 @@ $user = strtoupper($_SESSION['username']);
 
                     $j.each(response.elementi, function () {
                         row = $j("<tr/>").appendTo(table);
-                        $j("<button/>", { "html": "EDIT", "onclick": "edit(" + this.id + "," + this.area + "," + this.capienza + ",'" + this.tipoID + "'," + this.posizione + "," + this.pulizia + "," + this.costo + "," + this.status + ")" }).appendTo(row);
-                        $j("<td/>", { "html": "ID: " + this.id + "; " }).appendTo(row);
-                        $j("<td/>", { "html": "AREA: " + this.area + "; " }).appendTo(row);
-                        $j("<td/>", { "html": "CAPIENZA: " + this.capienza + "; " }).appendTo(row);
-                        $j("<td/>", { "html": "TIPO: " + this.tipo + "; " }).appendTo(row);
+                        $j("<button/>", {  "html": "EDIT", "onclick": "edit(" + this.id + "," + this.area + "," + this.capienza + ",'" + this.tipoID + "'," + this.posizione + "," + this.pulizia + "," + this.costo + "," + this.status + ")" }).appendTo(row);
+                        $j("<td/>", { "class":"thD","html": "ID: " + this.id + "; " }).appendTo(row);
+                        $j("<td/>", { "class":"thD","html": "AREA: " + this.area + " m²; " }).appendTo(row);
+                        $j("<td/>", { "class":"thD","html": "CAPIENZA: " + this.capienza + " persone; " }).appendTo(row);
+                        $j("<td/>", { "class":"thD","html": "TIPO: " + this.tipo.toLowerCase() + "; " }).appendTo(row);
                         if (this.posizione == 0) {
-                            $j("<td/>", { "html": "POSIZIONE: chiuso; " }).appendTo(row);
+                            $j("<td/>", { "class":"thD","html": "POSIZIONE: chiuso; " }).appendTo(row);
                         } else {
-                            $j("<td/>", { "html": "POSIZIONE: aperto; " }).appendTo(row);
+                            $j("<td/>", { "class":"thD","html": "POSIZIONE: aperto; " }).appendTo(row);
                         }
-                        $j("<td/>", { "html": "PULIZIA: " + this.pulizia + "; " }).appendTo(row);
-                        $j("<td/>", { "html": "COSTO: " + this.costo + "; " }).appendTo(row);
+                        $j("<td/>", { "class":"thD","html": "PULIZIA: " + this.pulizia + " ore; " }).appendTo(row);
+                        $j("<td/>", { "class":"thD","html": "COSTO: " + this.costo + " $; " }).appendTo(row);
                         if (this.status == 0) {
-                            $j("<td/>", { "html": "STATUS: NON DISPONIBILE; " }).appendTo(row);
+                            $j("<td/>", { "class":"thD","html": "STATUS: NON DISPONIBILE; " }).appendTo(row);
                         } else {
-                            $j("<td/>", { "html": "STATUS: DISPONIBILE; " }).appendTo(row);
+                            $j("<td/>", { "class":"thD","html": "STATUS: DISPONIBILE; " }).appendTo(row);
                         }
                     });
                 } else {
