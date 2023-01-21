@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Creato il: Gen 21, 2023 alle 15:09
+-- Creato il: Gen 21, 2023 alle 16:11
 -- Versione del server: 10.4.27-MariaDB
 -- Versione PHP: 8.1.12
 
@@ -43,6 +43,24 @@ INSERT INTO `associazione` (`ID`, `nome`, `password`) VALUES
 (3, 'CSC', 'CSC'),
 (4, 'MASTERCHEF', 'masterchef'),
 (5, 'NUOTO', 'nuoto');
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `eventi`
+--
+
+CREATE TABLE `eventi` (
+  `id` int(3) NOT NULL,
+  `descr` varchar(25) NOT NULL,
+  `private` int(1) NOT NULL,
+  `stanza` int(4) NOT NULL,
+  `organizz` varchar(10) NOT NULL,
+  `data` bigint(12) NOT NULL,
+  `durata` int(2) NOT NULL,
+  `iscritti` int(4) NOT NULL,
+  `associazione` varchar(25) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -97,12 +115,16 @@ CREATE TABLE `pubblico` (
   `utente` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+-- --------------------------------------------------------
+
 --
--- Dump dei dati per la tabella `pubblico`
+-- Struttura della tabella `soci`
 --
 
-INSERT INTO `pubblico` (`evento`, `utente`) VALUES
-(1, 'GIONNY');
+CREATE TABLE `soci` (
+  `associazione` varchar(25) NOT NULL,
+  `utente` varchar(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
