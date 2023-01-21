@@ -235,7 +235,7 @@ function bestStanza(){
  
     //EVENTO
     $sql = "SELECT A.id as ID, area as AREA, capienza as CAPIENZA, descr as TIPO, B.id as TIPOID, posizione as POSIZIONE, puliziah as PULIZIA, costoh as COSTO, status as STATUS
-    FROM stanza A join tipologia B on A.tipologia=B.id";
+    FROM stanza A join tipologia B on A.tipologia=B.id WHERE A.status = 1";
 
     $result = $conn->query($sql);
 
@@ -463,7 +463,7 @@ function newEvento()
     FROM stanza A join tipologia B on A.tipologia=B.id 
     WHERE not exists (SELECT * FROM eventi C WHERE C.stanza = A.id and 
     ((C.data < ".$inizio." and (C.data + C.durata*100 + A.puliziah*100)>".$inizio.") or
-    (C.data >= ".$inizio." and C.data < (".$inizio." + ".$durata."*100 + A.puliziah*100) ) ) )";
+    (C.data >= ".$inizio." and C.data < (".$inizio." + ".$durata."*100 + A.puliziah*100) ) ) ) and A.status = 1  ";
 
     $result = $conn->query($sql);
 
