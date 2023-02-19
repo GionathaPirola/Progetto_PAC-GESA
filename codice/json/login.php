@@ -61,7 +61,7 @@ function getInfo(){
         header( 'Location: /practice/HomePage.php' );
         exit;
     }else{
-        header( 'Location: /practice/Frontpage.php' );
+        header( 'Location: /practice/Frontpage.php?error=1' );
         exit;
     }
 
