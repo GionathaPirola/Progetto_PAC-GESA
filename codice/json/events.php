@@ -242,7 +242,7 @@ function bestStanza(){
     //contatori per trovare la stanza migliore
     $bestID = 0;
     $tipoBOOL = 0;
-    $diffMIN = 30;
+    $diffMIN = 15;
     $luogoBOOL = 0;
     $infrMAX = 0;
 
@@ -255,7 +255,9 @@ function bestStanza(){
                 $tipoBOOL = 1;
                 if($row['CAPIENZA'] >= $posti || $diffMIN >= 30 || $diffMIN < 0){
                     if($row['POSIZIONE'] == $luogo || $luogoBOOL == 0){
-                        $luogoBOOL = 1;
+                        if($row['POSIZIONE'] == $luogo){
+                            $luogoBOOL = 1;
+                        }
                         if( (($row['CAPIENZA'] - $posti)<=$diffMIN && $diffMIN>=0) || (($row['CAPIENZA'] - $posti)>=$diffMIN && $diffMIN<=0)){
                             $diffMIN = $row['CAPIENZA'] - $posti;
                         //conta infrastrutture SQL
@@ -457,7 +459,6 @@ function newEvento()
         $numInfr = $i;
     }
 
- 
     //EVENTO
     $sql = "SELECT A.id as ID, area as AREA, capienza as CAPIENZA, descr as TIPO, B.id as TIPOID, posizione as POSIZIONE, puliziah as PULIZIA, costoh as COSTO, status as STATUS
     FROM stanza A join tipologia B on A.tipologia=B.id 
@@ -470,10 +471,9 @@ function newEvento()
     //contatori per trovare la stanza migliore
     $bestID = 0;
     $tipoBOOL = 0;
-    $diffMIN = 30;
+    $diffMIN = 15;
     $luogoBOOL = 0;
     $infrMAX = 0;
-
 
     if ($result->num_rows > 0) {
         $risposta = 'ok';
@@ -483,7 +483,9 @@ function newEvento()
                 $tipoBOOL = 1;
                 if($row['CAPIENZA'] >= $posti || $diffMIN >= 30 || $diffMIN < 0){
                     if($row['POSIZIONE'] == $luogo || $luogoBOOL == 0){
-                        $luogoBOOL = 1;
+                        if($row['POSIZIONE'] == $luogo){
+                            $luogoBOOL = 1;
+                        }
                         if( (($row['CAPIENZA'] - $posti)<=$diffMIN && $diffMIN>=0) || (($row['CAPIENZA'] - $posti)>=$diffMIN && $diffMIN<=0)){
                             $diffMIN = $row['CAPIENZA'] - $posti;
                         //conta infrastrutture SQL

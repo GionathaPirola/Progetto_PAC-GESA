@@ -1,3 +1,20 @@
+<?php
+$error = strtoupper(getvar("error"));
+$ipaddress = $_SERVER['REMOTE_ADDR'];
+
+function getvar($name,$isint="") {
+  if(isset($_REQUEST[$name])) {
+      return $_REQUEST[$name];
+  } else {
+      if($isint) {
+          return 0;
+      } else {
+          return "";
+      }
+  }
+}
+
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,6 +26,12 @@ body {
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: 100% 100%;
+}
+
+.error{
+  color: red;
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 15px 45px 15px 45px;
 }
 
 /* Full-width input fields */
@@ -112,6 +135,11 @@ img.avatar {
   <form class="modal-content animate" action="http://localhost/practice/json/login.php" method="post">
     <div class="imgcontainer">
       <img src="img/icona.png" class="avatar">
+      <?php
+      if($error == 1){
+          echo ('<div class="error"> NOME UTENTE o PASSWORD ERRATI!</div>');
+      }
+      ?>
     </div>
 
     <div class="container">
@@ -139,6 +167,7 @@ img.avatar {
     </div>
 
     <div class="container">
+      
       <label for="uname"><b>Nome Utente</b></label>
       <input type="text" placeholder="Inserisci Nome Utente" name="uname" required>
 
