@@ -331,7 +331,6 @@ function bestStanza(){
                             if(substr($tempend,6,2)==substr($row5['INIZIO'],6,2)){ //se sono lo stesso giorno
                                 if($row5['INIZIO'] > $tempend){
                                     $row5flag = false;
-                                    $tempstart = $row5['FINE'];
                                 }else{
                                     $tempstart = $row5['FINE'];
                                 }                            
@@ -341,6 +340,7 @@ function bestStanza(){
 
                             if(substr($tempend,8,2)>20){
                                 $tempstart = nextday(substr($tempend, 0, 8))."0800";
+                                $tempend = $tempstart + $durata + $pul;
                             }
                         }
                     }
