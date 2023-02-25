@@ -132,24 +132,32 @@ $user = strtoupper($_SESSION['username']);
         <!-- POP UP per INSERIRE UNA NUOVA INFRASTRUTTURA -->
         <div id="newInfr" class="modal two" hidden>
         <form id="newInfrForm" class="modal-content animate">
+        <div class="imgcontainer">
+            <span onclick="document.getElementById('newInfr').style.display='none'" class="close"
+                title="Close Modal">&times;</span>
+        </div>
+        <div class="container">
             <div id="allinfr"></div>
             <label for="newinfr"><b>Nuova infrastruttura</b></label>
                     <input type="text" placeholder="Inserire infrastruttura" name="newinfr" required>
-            <button type="button" onclick="document.getElementById('newInfr').style.display='none'"
-                        class="cancelbtn">Cancel</button>
             <button type="button" onclick="newInfr()">Inserisci infrastruttura</button>
+        </div>
         </form>
         </div>
 
         <!-- POP UP per INSERIRE UNA NUOVA TIPOLOGIA DI STANZA -->
         <div id="newTipo" class="modal two" hidden>
         <form id="newTipoForm" class="modal-content animate">
+        <div class="imgcontainer">
+            <span onclick="document.getElementById('newTipo').style.display='none'" class="close"
+                title="Close Modal">&times;</span>
+        </div>
+        <div class="container">
             <div id="alltipo"></div>
             <label for="newtype"><b>Nuova tipologia</b></label>
                     <input type="text" placeholder="Inserire tipologia" name="newtype" required>
-            <button type="button" onclick="document.getElementById('newTipo').style.display='none'"
-                        class="cancelbtn">Cancel</button>
             <button type="button" onclick="newTipo()">Inserisci tipologia</button>
+        </div>
         </form>
         </div>
 
@@ -186,13 +194,9 @@ $user = strtoupper($_SESSION['username']);
                     <div id="infrastrutture">
                     </div>
 
-                    <button type="button" onclick="newStanza()">Insert</button>
+                    <button type="button" onclick="newStanza()">Inserisci</button>
                 </div>
 
-                <div class="container" style="background-color:#f1f1f1">
-                    <button type="button" onclick="document.getElementById('newRoom').style.display='none'"
-                        class="cancelbtn">Cancel</button>
-                </div>
             </form>
         </div>
 
@@ -213,13 +217,13 @@ $user = strtoupper($_SESSION['username']);
                     <label for="tipo"><b>Tipologia</b></label>
                     <select id="tipologieE" name="tipo"></select>
 
-                    <label for="area"><b>Area</b></label>
+                    <label for="area"><b>Area m²</b></label>
                     <input id="areaE" type="number" placeholder="Inserisci area" name="area" required>
 
                     <label for="capienza"><b>Capienza</b></label>
                     <input id="capienzaE" type="number" placeholder="Max persone" name="capienza" required>
 
-                    <label for="pulizia"><b>Tempo pulizia</b></label>
+                    <label for="pulizia"><b>Tempo pulizia in ore</b></label>
                     <input id="puliziaE" type="number" placeholder="tempo pulizia" name="pulizia" required>
 
                     <label for="costo"><b>Costo orario</b></label>
@@ -232,12 +236,7 @@ $user = strtoupper($_SESSION['username']);
                     <label for="blocked">NON DISPONIBILE</label><input type="radio" id="blockedE" name="status"
                         value="0"><br>
 
-                    <button type="button" onclick="editStanza()">Update</button>
-                </div>
-
-                <div class="container" style="background-color:#f1f1f1">
-                    <button type="button" onclick="document.getElementById('editRoom').style.display='none'"
-                        class="cancelbtn">Cancel</button>
+                    <button type="button" onclick="editStanza()">Aggiorna</button>
                 </div>
             </form>
         </div>
@@ -386,22 +385,22 @@ $user = strtoupper($_SESSION['username']);
 
                     $j.each(response.elementi, function () {
                         row = $j("<tr/>").appendTo(table);
-                        $j("<button/>", {  "html": "EDIT", "onclick": "edit(" + this.id + "," + this.area + "," + this.capienza + ",'" + this.tipoID + "'," + this.posizione + "," + this.pulizia + "," + this.costo + "," + this.status + ")" }).appendTo(row);
-                        $j("<td/>", { "class":"thD","html": "ID: " + this.id + "; " }).appendTo(row);
-                        $j("<td/>", { "class":"thD","html": "AREA: " + this.area + " m²; " }).appendTo(row);
-                        $j("<td/>", { "class":"thD","html": "CAPIENZA: " + this.capienza + " persone; " }).appendTo(row);
-                        $j("<td/>", { "class":"thD","html": "TIPO: " + this.tipo.toLowerCase() + "; " }).appendTo(row);
+                        $j("<button/>", {  "html": "MODIFICA", "onclick": "edit(" + this.id + "," + this.area + "," + this.capienza + ",'" + this.tipoID + "'," + this.posizione + "," + this.pulizia + "," + this.costo + "," + this.status + ")" }).appendTo(row);
+                        $j("<td/>", { "class":"thD","html": "ID: " + this.id + " " }).appendTo(row);
+                        $j("<td/>", { "class":"thD","html": "AREA: " + this.area + " m² " }).appendTo(row);
+                        $j("<td/>", { "class":"thD","html": "CAPIENZA: " + this.capienza + " persone " }).appendTo(row);
+                        $j("<td/>", { "class":"thD","html": "TIPO: " + this.tipo.toLowerCase() + " " }).appendTo(row);
                         if (this.posizione == 0) {
-                            $j("<td/>", { "class":"thD","html": "POSIZIONE: chiuso; " }).appendTo(row);
+                            $j("<td/>", { "class":"thD","html": "POSIZIONE: chiuso " }).appendTo(row);
                         } else {
-                            $j("<td/>", { "class":"thD","html": "POSIZIONE: aperto; " }).appendTo(row);
+                            $j("<td/>", { "class":"thD","html": "POSIZIONE: aperto " }).appendTo(row);
                         }
-                        $j("<td/>", { "class":"thD","html": "PULIZIA: " + this.pulizia + " ore; " }).appendTo(row);
-                        $j("<td/>", { "class":"thD","html": "COSTO: " + this.costo + " $; " }).appendTo(row);
+                        $j("<td/>", { "class":"thD","html": "PULIZIA: " + this.pulizia + " ore " }).appendTo(row);
+                        $j("<td/>", { "class":"thD","html": "COSTO: " + this.costo + " $ " }).appendTo(row);
                         if (this.status == 0) {
-                            $j("<td/>", { "class":"thD","html": "STATUS: NON DISPONIBILE; " }).appendTo(row);
+                            $j("<td/>", { "class":"thD","html": "STATUS: NON DISPONIBILE " }).appendTo(row);
                         } else {
-                            $j("<td/>", { "class":"thD","html": "STATUS: DISPONIBILE; " }).appendTo(row);
+                            $j("<td/>", { "class":"thD","html": "STATUS: DISPONIBILE " }).appendTo(row);
                         }
                     });
                 } else {
