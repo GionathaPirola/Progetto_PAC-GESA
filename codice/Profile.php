@@ -110,7 +110,7 @@ function getEvents()
  @import "layout.css"; 
 
  .associazione:hover{
-    color: rgb(170, 55, 55);
+    color: rgb(170, 55, 55) !important;
     cursor: pointer;
  }
 
@@ -129,7 +129,7 @@ function getEvents()
 
  .thD2{
     padding: 2px;
-    border-radius: 100px 50px;
+    border-radius: 20px;
     border: 2px solid white;
     color:black;
     font-weight:bold; 
@@ -215,39 +215,52 @@ function getEvents()
     </div>
         <!-- POP UP per VEDERE GLI ISCRITTI -->
     <div id="iscrittiAll" class="modal two" hidden>
+
     <form id="iscrittiAllForm" class="modal-content animate">
+    <div class="imgcontainer">
+        <span onclick="document.getElementById('iscrittiAll').style.display='none'" class="close"
+            title="Close Modal">&times;</span>
+    </div>
+    <div class="container">
         <div id="iscrittiResult"></div>
-        <button type="button" onclick="document.getElementById('iscrittiAll').style.display='none'"
-                    class="cancelbtn">Cancel</button>
     </form>
+    </div>
     </div>
     
     <!-- POP UP per INSERIRE UNA NUOVA ASSOCIAZIONE -->
     <div id="newAssociazione" class="modal two" hidden>
     <form id="newAssoForm" class="modal-content animate">
+    <div class="imgcontainer">
+        <span onclick="document.getElementById('newAssociazione').style.display='none'" class="close"
+            title="Close Modal">&times;</span>
+    </div>
+    <div class="container">
         <div id="allasso"></div>
         <label for="newasso"><b>Nuova associazione</b></label>
                 <input type="text" placeholder="Inserire Associazione" name="newasso" required>
         <label for="pswnew"><b>Password associazione</b></label>
                 <input type="text" placeholder="Inserire Password" name="pswnew" required>
-        <button type="button" onclick="document.getElementById('newAssociazione').style.display='none'"
-                    class="cancelbtn">Cancel</button>
         <button type="button" onclick="newAssociazione()">Inserisci Associazione</button>
     </form>
+    </div>
     </div>
 
     <!-- POP UP per ISCRIVERSI AD UNA NUOVA ASSOCIAZIONE -->
     <div id="subAssociazione" class="modal two" hidden>
     <form id="subAssoForm" class="modal-content animate">
+    <div class="imgcontainer">
+        <span onclick="document.getElementById('subAssociazione').style.display='none'" class="close"
+            title="Close Modal">&times;</span>
+    </div>
+    <div class="container">
         <div id="subasso"></div>
         <label for="subasso"><b>Iscriviti ad associazione</b></label>
                 <input type="text" placeholder="Inserire Associazione" name="subasso" required>
         <label for="pswasso"><b>Password associazione</b></label>
                 <input type="text" placeholder="Inserire Password" name="pswasso" required>
-        <button type="button" onclick="document.getElementById('subAssociazione').style.display='none'"
-                    class="cancelbtn">Cancel</button>
         <button type="button" onclick="subAssociazione()">Inserisci Associazione</button>
     </form>
+    </div>
     </div>
 </body>
 
@@ -309,6 +322,7 @@ function getEvents()
             success: function (response) {
                 if (response.result == 'ok') {
                     alert("inserimento completato");
+                    location.reload(); 
                 } else {
                     alert("inserimento fallito");
                 }
@@ -329,8 +343,8 @@ function getEvents()
         $j("<td/>", { "html":"ORGANIZZATORE", "class":"thD" }).appendTo(row);
         $j("<td/>", { "html":"DATA", "class":"thD" }).appendTo(row);
         $j("<td/>", { "html":"DURATA", "class":"thD" }).appendTo(row);
-        $j("<td/>", { "html":"N. ISCRITTI", "class":"thD" }).appendTo(row);
-        $j("<td/>", { "html":"VISIBILITà", "class":"thD" }).appendTo(row);
+        $j("<td/>", { "html":"N. MAX ISCRITTI", "class":"thD" }).appendTo(row);
+        $j("<td/>", { "html":"VISIBILITA'", "class":"thD" }).appendTo(row);
         if(jArray[0]!=null){
             for (var j = 1; j <= jArray[0].rows; j++) {
                 row = $j("<tr/>", { "class":"thR"}).appendTo(table); 
@@ -343,7 +357,7 @@ function getEvents()
                 if (jArray[j].private == 1) $j("<td/>", {  "class":"thD2" ,"html":"privato" }).appendTo(row);
                 else $j("<td/>", {  "class":"thD2" ,"html":"pubblico" }).appendTo(row);
                 if(trim(utente) == trim(jArray[j].organizz)){
-                    $j("<td/>", {  "html":"<button onclick=deleteEvento("+jArray[j].id+")> elimina </button>" }).appendTo(row);
+                    $j("<td/>", {  "html":"<button onclick=deleteEvento("+jArray[j].id+")> Elimina </button>" }).appendTo(row);
                 }else{
                     $j("<td/>", {  "html":"<button onclick=disiscriviEvento("+jArray[j].id+",'"+trim(utente)+"')> disiscriviti </button>" }).appendTo(row);
                 }
@@ -468,14 +482,14 @@ function getEvents()
             success:function(response) {
                 if (response.result=='ok') {
                     $j.each(response.elementi, function(){
-                        $j('#rnome').html("<h3>NOME: "+this.username+"</h3>");
+                        $j('#rnome').html("<h3>NOME:<cc style='color:white'> "+this.username+" </cc></h3>");
                         $j('#rnome').css('color', 'rgb(255, 194, 14)');
-                        $j('#rmail').html("<h3>EMAIL: "+this.mail+"</h3>");
+                        $j('#rmail').html("<h3>EMAIL: <cc style='color:white'>"+this.mail+" </cc></h3>");
                         $j('#rmail').css('color', 'rgb(255, 194, 14)');
 
                     });
                     $j.each(response.associazioni, function(){
-                        textAsso += "<i class='associazione' onclick='desub(\""+ this.associazione +"\")'>" + this.associazione + "</i> | ";
+                        textAsso += "<i style='color:white' class='associazione' onclick='desub(\""+ this.associazione +"\")'>" + this.associazione + "</i> | ";
                     });
                     textAsso = textAsso.slice(0, -2); 
                     $j('#rasso').html("<h3>ASSOCIAZIONE: "+textAsso+"</h3>");

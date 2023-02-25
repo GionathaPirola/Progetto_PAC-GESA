@@ -41,7 +41,7 @@ function getEvents()
         //seleziona -> stesso organizzatore o -> stessa associazione,pubbliche
         $sql = "SELECT distinct id as ID, descr as DESCR, private as PRIVATE, stanza as STANZA, organizz as ORGANIZZ, data as DATA, durata as DURATA, iscritti as ISCRITTI, A.associazione as ASSOCIAZIONE
 		        FROM eventi A left join soci B on A.associazione = B.associazione
-                WHERE  (organizz = '" . $user . "') or (B.utente = '" . $user . "' and private = '0') or (A.associazione = '')";
+                WHERE  (organizz = '" . $user . "') or (B.utente = '" . $user . "' and private = '0') or (A.associazione = '' and private = '0')";
     }
 
     $result = $conn->query($sql);
@@ -480,6 +480,10 @@ function getEvents()
         <!-- MODAL -->
         <div id="id01" class="modal" style="display:none">
             <form class="modal-content animate" id="form">
+                <div class="imgcontainer">
+                    <span onclick="document.getElementById('id01').style.display='none'" class="close"
+                        title="Close Modal">&times;</span>
+                </div>
                 <div class="container">
                     <label for="idEvento"><b>Id</b></label>
                     <input type="text" placeholder="id" name="idEvento" readonly required hidden>
@@ -504,22 +508,18 @@ function getEvents()
 
                     <label for="associazione"><b>Visibilità</b></label>
                     <input type="text" placeholder="associazione" name="associazione" readonly required>
+                    <button type="button" onclick="newSubscr()" id="subscr">Iscriviti</button>
+                </div>
 
-                </div>
-                <button type="button" onclick="newSubscr()" id="subscr">Iscriviti</button>
-                <div class="container" style="background-color:#f1f1f1">
-                    <button type="button" onclick="document.getElementById('id01').style.display='none'"
-                        class="cancelbtn">Cancel</button>
-                </div>
             </form>
         </div>
 
         <!-- MODAL -->
         <div id="id03" class="modal" style="display:none">     
         <form  id="form03" class="modal-content animate" >
-                <div class="container" style="background-color:#f1f1f1">
-                    <button type="button" onclick="document.getElementById('id03').style.display='none'"
-                        class="cancelbtn">Cancel</button>
+        <div class="imgcontainer">
+                    <span onclick="document.getElementById('id03').style.display='none'" class="close"
+                        title="Close Modal">&times;</span>
                 </div>
                 <div id= "div03"></div>
             </form>   
@@ -699,13 +699,21 @@ function getEvents()
         });
     }
 
+    function formatData(data){
+        anno = data.substr(0,4);
+        mese = data.substr(4,2);
+        giorno= data.substr(6,2);
+        ora = data.substr(8,2);
+        return giorno + "/" + mese + "/" + anno + " "+ ora + ":00";
+    }
+
     function chooseEvento(evento,j){
         postit.style.display = "none";
         $j('input[name=idEvento]').val(evento[j].id);
         $j('input[name=nome]').val(evento[j].descr);
         $j('input[name=stanza]').val(evento[j].stanza);
         $j('input[name=organizz]').val(evento[j].organizz);
-        $j('input[name=data]').val(evento[j].data);
+        $j('input[name=data]').val(formatData(evento[j].data));
         $j('input[name=durata]').val(evento[j].durata);
         $j('input[name=partecipanti]').val(evento[j].iscritti);
         if (evento[j].private == 1) {

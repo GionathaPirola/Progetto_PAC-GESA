@@ -207,7 +207,7 @@ function addEvento(){
 }
 
 function bestStanza(){
-    global $conn, $posti, $user, $nome, $data, $time, $durata, $privacy, $tipo, $luogo, $infrastrutture, $asso; 
+    global $conn, $posti, $user, $nome, $data, $time, $durata, $privacy, $tipo, $luogo, $infrastrutture; 
     $arr = array();
     $val = array();
     $val2 = array();
@@ -322,7 +322,7 @@ function bestStanza(){
                     $risposta = 'ok';
                     $msg = '';
                     $row5flag = true;
-                    $pul = $row3['PULIZIA']*100;
+                    $pul = $row3['PULIZIA'];
                     $tempend = $tempstart + $durata + $pul;
 
                     while ($row5 = $result5->fetch_assoc()) {
@@ -338,9 +338,9 @@ function bestStanza(){
 
                             $tempend = $tempstart + $durata + $pul;
 
-                            if(substr(($tempend),8,2)>20){
+                            if(substr($tempend,8,2)>20){
                                 $tempstart = nextday(substr($tempend, 0, 8))."0800";
-                                $tempend = $tempstart + $durata+ $pul;
+                                $tempend = $tempstart + $durata + $pul;
                             }
                         }
                     }
@@ -361,8 +361,7 @@ function bestStanza(){
                     'evento' => $nome,
                     'privacy' => $privacy,
                     'posti' => $posti,
-                    'beststart' => $tempstart,
-                    'asso' => $asso
+                    'beststart' => $tempstart
                 );
             }
         } else {
@@ -435,7 +434,7 @@ function nextDay($data){
 
 function newEvento()
 {
-    global $conn, $posti, $user, $nome, $data, $time, $durata, $privacy, $tipo, $luogo, $infrastrutture,$asso;
+    global $conn, $posti, $user, $nome, $data, $time, $durata, $privacy, $tipo, $luogo, $infrastrutture;
     $arr = array();
     $val = array();
     $val2 = array();
@@ -551,8 +550,7 @@ function newEvento()
                     'data' => $data,
                     'time' => $time,
                     'privacy' => $privacy,
-                    'posti' => $posti,
-                    'asso' => $asso
+                    'posti' => $posti
                 );
             }
         } else {

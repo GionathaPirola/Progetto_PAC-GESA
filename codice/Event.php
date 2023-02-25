@@ -255,8 +255,7 @@ $admin = isAdmin(); //1 se admin
             </div>
 
             <div class="container" style="background-color:#f1f1f1">
-                <button type="button" onclick="document.getElementById('pickRoom').style.display='none'"
-                    class="cancelbtn">Annulla Prenotazione</button>
+
             </div>
         </div>
         </div>
@@ -382,21 +381,21 @@ $admin = isAdmin(); //1 se admin
                         $j.each(response.elementi, function(){
                             pickRoom.style.display = "block";
                             innertext += "NOME: " + this.evento + " di " + this.utente + "<br>" ;
-                            innertext += "AREA: " + this.area + " CAPIENZA: " + this.capienza ;
-                            innertext += " TIPO: " + this.tipo + " COSTO : " + this.costo*(parseInt(this.pulizia)+parseInt(this.durata)) + " $ <br>";
-                            innertext += " DATA: " + this.data + " ORA: " + this.time ;
-                            innertext += " POSTI: " + this.posti ;
-                            if (this.privacy == '0') innertext += " VISIBILITà: pubblico ";
-                            else innertext += " VISIBILITà: privato ";
-                            if (this.posizione == '0') innertext += " LUOGO: chiuso ";
-                            else innertext += "LUOGO: aperto ";
-                            innerbutton= "<button type='button' style='width:50%' onclick=\"pickStanza('"+this.evento+"','"+this.utente+"','"+this.id+"','"+this.data+"','"+this.time+"','"+this.durata+"','"+this.posti+"','"+this.privacy+"')\">Conferma</button>";
+                            innertext += "AREA: " + this.area + " <br>CAPIENZA: " + this.capienza ;
+                            innertext += " <br>TIPO: " + this.tipo + "<br>COSTO : " + this.costo*(parseInt(this.pulizia)+parseInt(this.durata)) + " $ <br>";
+                            innertext += " DATA: " + this.data + " " + this.time ;
+                            innertext += " <br>POSTI: " + this.posti ;
+                            if (this.privacy == '0') innertext += "<br>VISIBILITA': pubblico ";
+                            else innertext += " <br>VISIBILITA': privato ";
+                            if (this.posizione == '0') innertext += "<br>LUOGO: chiuso ";
+                            else innertext += "<br>LUOGO: aperto ";
+                            innerbutton= "<button type='button' style='width:50%' onclick=\"pickStanza('"+this.evento+"','"+this.utente+"','"+this.id+"','"+this.data+"','"+this.time+"','"+this.durata+"','"+this.posti+"','"+this.privacy+"','"+this.asso+"')\">Conferma</button>";
                             bestbutton= "<button type='button' style='width:50%' onclick=\"bestStanza()\">Mostra Stanza Migliore</button>";
 
                         });
-                        innertext += "INFR: ";
+                        innertext += "<br>INFR: ";
                         $j.each(response.infrastrutture, function(){
-                            innertext +=  this.infr + ", ";
+                            innertext +=  this.infr + "  ";
                         });
                         innertext += "<br>";
                         innertext += innerbutton;
@@ -434,31 +433,31 @@ $admin = isAdmin(); //1 se admin
                     innertext = "";
                     $j.each(response.elementi, function(){
                         pickRoom.style.display = "block";
-                        innertext += "STANZA MIGLIORE <br>" ;
+                        innertext += "<b style='color:blue'>STANZA MIGLIORE</b> <br>" ;
                         innertext += "NOME: " + this.evento + " di " + this.utente + "<br>" ;
-                        innertext += "AREA: " + this.area + " CAPIENZA: " + this.capienza ;
-                        innertext += " TIPO: " + this.tipo + " COSTO : " + this.costo*(parseInt(this.pulizia)+parseInt(this.durata)) + " $ <br>";
+                        innertext += "AREA: " + this.area + " <br>CAPIENZA: " + this.capienza ;
+                        innertext += " <br>TIPO: " + this.tipo + " <br>COSTO : " + this.costo*(parseInt(this.pulizia)+parseInt(this.durata)) + " $ <br>";
                         innertext += " DATA: " + this.beststart.substring(0,4) + "-" + this.beststart.substring(4,6) + "-" + this.beststart.substring(6,8);
-                        innertext += " ORA: " + this.beststart.substring(8,10) + ":" + this.beststart.substring(10,12) ;
-                        innertext += " POSTI: " + this.posti ;
-                        if (this.privacy == '0') innertext += " VISIBILITà: pubblico ";
-                        else innertext += " VISIBILITà: privato ";
-                        if (this.posizione == '0') innertext += " LUOGO: chiuso ";
-                        else innertext += "LUOGO: aperto ";
+                        innertext += " " + this.beststart.substring(8,10) + ":" + this.beststart.substring(10,12) ;
+                        innertext += "<br>POSTI: " + this.posti ;
+                        if (this.privacy == '0') innertext += " <br>VISIBILITA': pubblico ";
+                        else innertext += " <br>VISIBILITA': privato ";
+                        if (this.posizione == '0') innertext += " <br>LUOGO: chiuso ";
+                        else innertext += "<br>LUOGO: aperto ";
                         dataTMP =  this.beststart.substring(0,4) + "-" + this.beststart.substring(4,6) + "-" + this.beststart.substring(6,8);
                         oraTMP = this.beststart.substring(8,10) + ":" + this.beststart.substring(10,12) ;
-                        innerbutton= "<button type='button' style='width:50%' onclick=\"pickStanza('"+this.evento+"','"+this.utente+"','"+this.id+"','"+dataTMP+"','"+oraTMP+"','"+this.durata+"','"+this.posti+"','"+this.privacy+"')\">Conferma</button>";
+                        innerbutton= "<button type='button' style='width:50%' onclick=\"pickStanza('"+this.evento+"','"+this.utente+"','"+this.id+"','"+dataTMP+"','"+oraTMP+"','"+this.durata+"','"+this.posti+"','"+this.privacy+"','"+this.asso+"')\">Conferma</button>";
                     });
-                    innertext += "INFR: ";
+                    innertext += "<br>INFR: ";
                     $j.each(response.infrastrutture, function(){
-                        innertext +=  this.infr + ", ";
+                        innertext +=  this.infr + "  ";
                     });
                     innertext += "<br>";
                     innertext += innerbutton;
                     $j('#recap').html(innertext);
 
                 }else{
-                    alert(response.errore);
+                    alert("nessuna stanza trovata con le caratteristiche richieste");
                 }
             },
             error:function(){
@@ -467,7 +466,7 @@ $admin = isAdmin(); //1 se admin
         });
     }
 
-    function pickStanza(nome,utente,idstanza,data,ora,durata,posti,privacy){
+    function pickStanza(nome,utente,idstanza,data,ora,durata,posti,privacy,asso){
         var param = 'info=5&';
         param += 'uname=' + utente + '&';
         param += 'nome=' + nome + '&';
@@ -476,7 +475,8 @@ $admin = isAdmin(); //1 se admin
         param += 'time=' + ora + '&';
         param += 'durata=' + durata + '&';
         param += 'partecipanti=' + posti + '&';
-        param += 'public=' + privacy ;
+        param += 'public=' + privacy + '&' ;
+        param += 'asso=' + asso ;
 
         $j.ajax({
                 url:'json/events.php', 
@@ -487,6 +487,7 @@ $admin = isAdmin(); //1 se admin
                 success:function(response) {
                 if (response.result=='ok') {
                     alert("inserimento completato");
+                    location.reload(); 
                 }else{
                     alert(response.errore);
                 }
@@ -560,6 +561,15 @@ $admin = isAdmin(); //1 se admin
         });
         AJAXobj = [];
     }
+
+    function formatData(data){
+        anno = data.substr(0,4);
+        mese = data.substr(4,2);
+        giorno= data.substr(6,2);
+        ora = data.substr(8,2);
+        return giorno + "/" + mese + "/" + anno + " "+ ora + ":00";
+    }
+
 
 </script>
 

@@ -134,7 +134,7 @@ $admin = isAdmin(); //1 se admin
                 <h2 style="color:  rgb(228, 159, 21);">COME FUNZIONA?</h2>
                 <p > Tramite questa pagina web è possibile svolgere tre funzioni principali: </p>
                 <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp   1. Prenotare una stanza per un evento privato.</p>
-                <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp    2. Prenotare una stanza per un evento pubblico, a cui tutti gli iscritto alla vostra associazione potranno iscriversi.</p>
+                <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp    2. Prenotare una stanza per un evento pubblico, a cui tutti gli iscritti alla vostra associazione potranno iscriversi.</p>
                 <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp    3. Iscriversi ad un evento della propria associazione.</p>
                 <p>&nbsp </p>
 

@@ -178,10 +178,10 @@ img.avatar {
       <input type="email" placeholder="Inserisci E-mail" name="mail" required>
 
       <label for="gruppo"><b>Associazione</b></label>
-      <input type="text" placeholder="Inserisci Associazione" name="gruppo" required>
+      <input type="text" placeholder="Inserisci Associazione" name="gruppo" >
 
       <label for="pswasso"><b>Password Associazione</b></label>
-      <input type="text" placeholder="Inserisci Password Associazione" name="pswasso" required>
+      <input type="text" placeholder="Inserisci Password Associazione" name="pswasso" >
     </div>
 
     <div class="container" style="background-color:#f1f1f1">
